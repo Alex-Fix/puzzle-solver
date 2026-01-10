@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>PuzzleSolver.Cli</RootNamespace>
+    <AssemblyName>PuzzleSolver.Cli</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PuzzleSolver.Automation\PuzzleSolver.Automation.csproj" />
+    <ProjectReference Include="..\PuzzleSolver.Core\PuzzleSolver.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Spectre.Console.Cli" />
+  </ItemGroup>
+
+</Project>

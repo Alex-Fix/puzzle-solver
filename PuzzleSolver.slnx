@@ -8,5 +8,14 @@
     <File Path="LICENSE" />
     <File Path="README.md" />
   </Folder>
-  <Folder Name="/src/" />
+  <Folder Name="/src/">
+    <Project Path="src/PuzzleSolver.Automation/PuzzleSolver.Automation.csproj" />
+    <Project Path="src/PuzzleSolver.Cli/PuzzleSolver.Cli.csproj" />
+    <Project Path="src/PuzzleSolver.Core/PuzzleSolver.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PuzzleSolver.Automation.IntegrationTests/PuzzleSolver.Automation.IntegrationTests.csproj" />
+    <Project Path="tests/PuzzleSolver.Cli.FunctionalTests/PuzzleSolver.Cli.FunctionalTests.csproj" />
+    <Project Path="tests/PuzzleSolver.Core.UnitTests/PuzzleSolver.Core.UnitTests.csproj" />
+  </Folder>
 </Solution>
