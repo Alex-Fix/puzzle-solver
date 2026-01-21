@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using PuzzleSolver.Core.Interfaces;
 
 namespace PuzzleSolver.Core.BallSort;
@@ -45,7 +46,7 @@ public sealed class BallSortState : IState<BallSortState, BallSortMove, BallSort
             
             for (int toFlaskIndex = 0; toFlaskIndex < _flasksCount; ++toFlaskIndex)
             {
-                // Dont more balls withing the same flask
+                // Don't more balls withing the same flask
                 if (fromFlaskIndex == toFlaskIndex)
                     continue;
 
@@ -167,6 +168,7 @@ public sealed class BallSortState : IState<BallSortState, BallSortMove, BallSort
         return false;
     }
     
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Span<byte> GetFlask(byte[] layout, int flaskIndex)
         => layout.AsSpan(_flaskCapacity * flaskIndex, _flaskCapacity);
     

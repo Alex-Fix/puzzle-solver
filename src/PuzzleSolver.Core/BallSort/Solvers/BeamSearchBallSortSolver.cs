@@ -21,7 +21,6 @@ internal sealed class BeamSearchBallSortSolver : BaseBallSortSolver, IBallSortSo
                 throw new OperationCanceledException(nameof(Solve));
             
             nextCandidates.Clear();
-
             foreach (var node in frontier)
             {
                 BallSortState state = node.State;

@@ -5,14 +5,11 @@ using PuzzleSolver.Core.BallSort.Solvers;
 
 namespace PuzzleSolver.Core.BallSort;
 
-public static class DependencyInjection
+internal static class DependencyInjection
 {
     public static IServiceCollection AddBallSort(this IServiceCollection services, IConfiguration configuration)
-    {
-        return services
-            .Configure<BallSortOptions>(configuration.GetSection(nameof(BallSortOptions)))
-            .AddSingleton<IValidateOptions<BallSortOptions>,  BallSortOptionsValidator>()
-            .AddKeyedSingleton<IBallSortSolver, BeamSearchBallSortSolver>(BallSortAlgorithm.BeamSearch)
-            .AddSingleton<IBallSortSolver>(sp => sp.GetRequiredKeyedService<IBallSortSolver>(BallSortAlgorithm.BeamSearch));
-    }
+        => services
+            .Configure<BallSortOptions>(configuration.GetRequiredSection(nameof(BallSortOptions)))
+            .AddSingleton<IValidateOptions<BallSortOptions>, BallSortOptionsValidator>()
+            .AddKeyedSingleton<IBallSortSolver, BeamSearchBallSortSolver>(BallSortAlgorithm.BeamSearch);
 }

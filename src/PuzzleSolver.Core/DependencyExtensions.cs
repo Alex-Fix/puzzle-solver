@@ -7,8 +7,6 @@ namespace PuzzleSolver.Core;
 public static class DependencyExtensions
 {
     public static IServiceCollection AddCoreServices(this IServiceCollection services, IConfiguration configuration)
-    {
-        return services
+        => services
             .AddBallSort(configuration);
-    }
 }
