@@ -16,7 +16,8 @@ public sealed class BallSortAutomation : BaseAutomation<BallSortState, BallSortM
     private const string AutoMoveBtnSelector = ".gameButton[alt='Auto Moves']";
     private const string ScriptSelector = "#main_game_div > script";
     private const string TubeStartSelector = "#tube_";
-    
+
+    private const string SortPath = "ballsort_colored";
     private const string FlasksCountGroup = "sx";
     private const string FlaskCapacityGroup = "sy";
     private const string LayoutGroup = "p";
@@ -49,6 +50,8 @@ public sealed class BallSortAutomation : BaseAutomation<BallSortState, BallSortM
     
     public override async Task<BallSortState> GetInitialStateAsync()
     {
+        bool sort = _page.Url.Contains(SortPath, StringComparison.OrdinalIgnoreCase);
+        
         string scriptContent = await _page.InnerTextAsync(ScriptSelector);
 
         Match match = InitialStateRegex.Match(scriptContent);
@@ -70,7 +73,7 @@ public sealed class BallSortAutomation : BaseAutomation<BallSortState, BallSortM
         byte[][] layout = JsonSerializer.Deserialize<byte[][]>(layoutString, serializerOptions)
             ?? throw new InitialStateNotFoundException("Layout is empty.");
 
-        return new(flasksCount, flaskCapacity, layout);
+        return new(sort, flasksCount, flaskCapacity, layout);
     }
 
     public override async Task ApplyMovesAsync(IEnumerable<BallSortMove> moves, CancellationToken cancellationToken = default)

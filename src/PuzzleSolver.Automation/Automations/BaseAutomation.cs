@@ -8,16 +8,14 @@ namespace PuzzleSolver.Automation.Automations;
 public abstract class BaseAutomation<TState, TMove, TOptions> : IAutomation<TState, TMove, TOptions> 
     where TState : IState<TState, TMove, TOptions> 
     where TMove : struct, IMove
-    where TOptions : class
+    where TOptions : IOptions
 {
     private const string ConsentBtnSelector = "button.fc-button.fc-cta-consent.fc-primary-button";
     
     protected readonly IPage _page;
 
     protected BaseAutomation(IPage page)
-    {
-        _page = page;
-    }
+        => _page = page;
 
     protected abstract string UrlStart { get; }
 

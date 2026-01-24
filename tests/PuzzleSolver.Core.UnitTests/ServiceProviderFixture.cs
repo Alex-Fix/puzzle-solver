@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PuzzleSolver.Core.BallSort;
 
 namespace PuzzleSolver.Core.UnitTests;
 
@@ -11,12 +10,7 @@ public sealed class ServiceProviderFixture : IDisposable
 
     public ServiceProviderFixture()
     {
-        IConfigurationRoot configuration = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string?>
-            {
-                { $"{nameof(BallSortOptions)}:{nameof(BallSortOptions.BeamWidth)}", 250.ToString() }
-            })
-            .Build();
+        IConfigurationRoot configuration = new ConfigurationBuilder().Build();
         
         _serviceProvider = new ServiceCollection()
             .AddCoreServices(configuration)

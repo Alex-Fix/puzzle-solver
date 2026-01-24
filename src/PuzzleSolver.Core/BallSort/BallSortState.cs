@@ -7,16 +7,18 @@ public sealed class BallSortState : IState<BallSortState, BallSortMove, BallSort
 {
     private const byte Empty = byte.MaxValue;
     
+    private readonly bool _sort;
     private readonly int _flasksCount;
     private readonly int _flaskCapacity;
     private readonly byte[] _layout;
     
-    public BallSortState(int flasksCount, int flaskCapacity, byte[][] layout)
+    public BallSortState(bool sort, int flasksCount, int flaskCapacity, byte[][] layout)
     {
+        _sort = sort;
         _flasksCount = flasksCount;
         _flaskCapacity = flaskCapacity;
         _layout = new byte[flasksCount * flaskCapacity];
-
+        
         Span<byte> layoutSpan = _layout.AsSpan();
         layoutSpan.Fill(Empty);
 
@@ -29,8 +31,9 @@ public sealed class BallSortState : IState<BallSortState, BallSortMove, BallSort
         }
     }
 
-    private BallSortState(int flasksCount, int flaskCapacity, byte[] layout)
+    private BallSortState(bool sort, int flasksCount, int flaskCapacity, byte[] layout)
     {
+        _sort = sort;
         _flasksCount = flasksCount;
         _flaskCapacity = flaskCapacity;
         _layout = layout;
@@ -68,7 +71,7 @@ public sealed class BallSortState : IState<BallSortState, BallSortMove, BallSort
         // Push ball
         SetTopBall(newLayout, move.To, ball);        
         
-        return new BallSortState(_flasksCount, _flaskCapacity, newLayout);
+        return new BallSortState(_sort, _flasksCount, _flaskCapacity, newLayout);
     }
 
     public bool IsSolved()
@@ -121,6 +124,9 @@ public sealed class BallSortState : IState<BallSortState, BallSortMove, BallSort
  
     internal IEnumerable<BallSortMove> GetSortingMoves()
     {
+        if(!_sort)
+            return Enumerable.Empty<BallSortMove>();
+        
         byte expectedBall = 0;
         var moves = new List<BallSortMove>();
 
@@ -149,7 +155,9 @@ public sealed class BallSortState : IState<BallSortState, BallSortMove, BallSort
     
     private bool FillSortingMoves(int expectedBall, int fromFlaskIndex, bool reverse, ref List<BallSortMove> moves)
     {
-        for (int toFlaskIndex = fromFlaskIndex; toFlaskIndex < _flasksCount; ++toFlaskIndex)
+        for (int toFlaskIndex = reverse ? fromFlaskIndex : _flasksCount - 1; 
+             reverse ? toFlaskIndex < _flasksCount : toFlaskIndex >= fromFlaskIndex; 
+             toFlaskIndex = reverse ? toFlaskIndex + 1 : toFlaskIndex - 1 )
         {
             GetTopBall(_layout, toFlaskIndex, out _, out byte toTopBall, false);
             if (toTopBall != expectedBall)

@@ -9,7 +9,7 @@ internal static class DependencyInjection
 {
     public static IServiceCollection AddBallSort(this IServiceCollection services, IConfiguration configuration)
         => services
-            .Configure<BallSortOptions>(configuration.GetRequiredSection(nameof(BallSortOptions)))
+            .Configure<BallSortOptions>(configuration.GetSection(BallSortOptions.Name))
             .AddSingleton<IValidateOptions<BallSortOptions>, BallSortOptionsValidator>()
             .AddKeyedSingleton<IBallSortSolver, BeamSearchBallSortSolver>(BallSortAlgorithm.BeamSearch);
 }

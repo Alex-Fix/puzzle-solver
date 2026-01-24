@@ -15,5 +15,8 @@
     <!-- Versioning (default, overridden by Git tag in workflow) -->
     <Version>1.0</Version>
     <AssemblyVersion>$(Version)</AssemblyVersion>
+    <FileVersion>$(Version)</FileVersion>
+    <AssemblyFileVersion>$(Version)</AssemblyFileVersion>
+    <AssemblyInformationalVersion>$(Version)</AssemblyInformationalVersion>
   </PropertyGroup>
 </Project>

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PuzzleSolver.Automation.Automations.BallSort;
+using PuzzleSolver.Automation.AutomationFactories;
 
 namespace PuzzleSolver.Automation.IntegrationTests;
 
@@ -22,7 +22,7 @@ public sealed class ServiceProviderFixture : IAsyncLifetime
         IConfigurationRoot configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
-                { $"{nameof(BallSortAutomationOptions)}:{nameof(BallSortAutomationOptions.MoveDelayMs)}", 600.ToString() } 
+                { $"{AutomationFactoryOptions.Name}:{nameof(AutomationFactoryOptions.Headless)}", true.ToString() }
             })
             .Build();
         

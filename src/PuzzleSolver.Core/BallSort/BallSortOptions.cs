@@ -1,6 +1,11 @@
+using PuzzleSolver.Core.Interfaces;
+
 namespace PuzzleSolver.Core.BallSort;
 
-public sealed class BallSortOptions
+public sealed class BallSortOptions : IOptions
 {
-    public int BeamWidth { get; set; }
+    public static string Name => nameof(BallSortOptions);
+    
+    public const int DefaultBeamWidth = 250;
+    public int BeamWidth { get; set; } = DefaultBeamWidth;
 }

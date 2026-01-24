@@ -12,9 +12,7 @@ public sealed class BallSortAutomationTests : PageTest, IClassFixture<ServicePro
     private readonly ServiceProviderFixture _serviceProviderFixture;
 
     public BallSortAutomationTests(ServiceProviderFixture serviceProviderFixture)
-    {
-        _serviceProviderFixture = serviceProviderFixture;
-    }
+        => _serviceProviderFixture = serviceProviderFixture;
     
     [Fact]
     public async Task NavigateAsync_WhenWrongUrl()
@@ -61,9 +59,29 @@ public sealed class BallSortAutomationTests : PageTest, IClassFixture<ServicePro
         bool isVisible = await Page.IsVisibleAsync(gameContainerSelector);
         isVisible.Should().BeTrue();
     }
+
+    [Fact]
+    public async Task GetInitialStateAsync_WhenSort()
+    {
+        const string url = "https://grandgames.net/ballsort_colored/id586145";
+        
+        IOptionsMonitor<BallSortAutomationOptions> optionsMonitor = _serviceProviderFixture.GetRequiredService<IOptionsMonitor<BallSortAutomationOptions>>();
+        using var automation = new BallSortAutomation(Page, optionsMonitor);
+        
+        await automation.NavigateAsync(url);
+        await automation.ConfigureAsync();
+        
+        BallSortState actualState = await automation.GetInitialStateAsync();
+        int actualHash = actualState.GetStateHash();
+        
+        var expectedState = new BallSortState(true, 12, 4, [[],[4,8,4],[4,5,8],[7,1,6],[8,7,2],[2,6,2,2],[2,6,2,6],[3,8,3,1],[0,5,0,7],[0,4,0,3],[5,3,5,7],[1,2,1,2]]);
+        int expectedHash = expectedState.GetStateHash();
+        
+        actualHash.Should().Be(expectedHash);
+    }
     
     [Fact]
-    public async Task GetInitialStateAsync()
+    public async Task GetInitialStateAsync_WhenNotSort()
     {
         const string url = "https://grandgames.net/ballsort_classic/id477125";
         
@@ -76,7 +94,7 @@ public sealed class BallSortAutomationTests : PageTest, IClassFixture<ServicePro
         BallSortState actualState = await automation.GetInitialStateAsync();
         int actualHash = actualState.GetStateHash();
         
-        var expectedState = new BallSortState(20, 5, [[],[6,5,5],[5,0,5],[5,6,6,16],[4,1,1,4,1],[1,2,2,1,4],[7,1,1,7,15],[7,8,8,7,2],[15,2,15,4,1],[12,9,9,12,7],[11,14,11,12,8],[8,9,9,8,1],[14,13,13,14,12],[6,0,0,0,3],[10,3,10,10,14],[16,6,16,0,10],[2,15,15,4,1],[16,3,3,16,13],[14,11,11,12,9],[13,3,13,10,11]]);
+        var expectedState = new BallSortState(false, 20, 5, [[],[6,5,5],[5,0,5],[5,6,6,16],[4,1,1,4,1],[1,2,2,1,4],[7,1,1,7,15],[7,8,8,7,2],[15,2,15,4,1],[12,9,9,12,7],[11,14,11,12,8],[8,9,9,8,1],[14,13,13,14,12],[6,0,0,0,3],[10,3,10,10,14],[16,6,16,0,10],[2,15,15,4,1],[16,3,3,16,13],[14,11,11,12,9],[13,3,13,10,11]]);
         int expectedHash = expectedState.GetStateHash();
         
         actualHash.Should().Be(expectedHash);

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.Playwright;
 using PuzzleSolver.Automation.Interfaces;
 
@@ -9,13 +10,17 @@ internal sealed class PlaywrightAutomationFactory : IAutomationFactory
     private readonly SemaphoreSlim _lock = new(1, 1);
 
     private readonly IServiceProvider _serviceProvider;
+    private volatile AutomationFactoryOptions _options;
+    private readonly IDisposable? _optionsSubscription;
     
     private IPlaywright? _playwright;
     private IBrowser? _browser;
 
-    public PlaywrightAutomationFactory(IServiceProvider serviceProvider)
+    public PlaywrightAutomationFactory(IServiceProvider serviceProvider, IOptionsMonitor<AutomationFactoryOptions> optionsMonitor)
     {
         _serviceProvider = serviceProvider;
+        _options = optionsMonitor.CurrentValue;
+        _optionsSubscription = optionsMonitor.OnChange(value => _options = value);
     }
     
     public async Task<TAutomation> CreateAsync<TAutomation>(CancellationToken cancellationToken = default) where TAutomation : IBaseAutomation
@@ -25,7 +30,7 @@ internal sealed class PlaywrightAutomationFactory : IAutomationFactory
         try
         {
             _playwright ??= await Playwright.CreateAsync();
-            _browser ??= await _playwright.Chromium.LaunchAsync();
+            _browser ??= await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = _options.Headless });
         }
         finally
         {
@@ -44,6 +49,8 @@ internal sealed class PlaywrightAutomationFactory : IAutomationFactory
 
         try
         {
+            _optionsSubscription?.Dispose();
+            
             if (_browser is not null)
                 await _browser.DisposeAsync();
             
@@ -52,6 +59,7 @@ internal sealed class PlaywrightAutomationFactory : IAutomationFactory
         finally
         {
             _lock.Release();
+            _lock.Dispose();
         }
     }
 }

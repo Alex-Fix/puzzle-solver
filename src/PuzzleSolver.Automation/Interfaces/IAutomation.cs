@@ -7,7 +7,7 @@ public interface IBaseAutomation;
 public interface IAutomation<TState, in TMove, TOptions> : IBaseAutomation
     where TState : IState<TState, TMove, TOptions>
     where TMove : struct, IMove
-    where TOptions : class
+    where TOptions : IOptions
 {
     Task NavigateAsync(string url);
     Task ConfigureAsync();

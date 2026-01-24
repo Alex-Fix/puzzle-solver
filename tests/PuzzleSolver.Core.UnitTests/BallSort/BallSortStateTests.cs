@@ -8,7 +8,7 @@ public sealed class BallSortStateTests
     [Fact]
     public void GetValidMoves_WhenNotFull()
     {
-        var state = new BallSortState(4, 3, [[], [1,2], [1,2], [1,2]]);
+        var state = new BallSortState(true, 4, 3, [[], [1,2], [1,2], [1,2]]);
         IEnumerable<BallSortMove> moves = state.GetValidMoves();
 
         List<BallSortMove> expectedMoves = [
@@ -29,7 +29,7 @@ public sealed class BallSortStateTests
     [Fact]
     public void GetValidMoves_WhenFull()
     {
-        var state = new BallSortState(4, 3, [[], [1,1,2], [1,2,2], [3,3,3]]);
+        var state = new BallSortState(true, 4, 3, [[], [1,1,2], [1,2,2], [3,3,3]]);
         IEnumerable<BallSortMove> moves = state.GetValidMoves();
 
         List<BallSortMove> expectedMoves = [
@@ -44,12 +44,12 @@ public sealed class BallSortStateTests
     [Fact]
     public void Apply()
     {
-        var actualState = new BallSortState(4, 3, [[], [0, 0, 0], [1, 2, 2], [1, 1, 2]]);
+        var actualState = new BallSortState(true, 4, 3, [[], [0, 0, 0], [1, 2, 2], [1, 1, 2]]);
         var move = new BallSortMove(1, 0);
         actualState = actualState.Apply(move);
         int actualHash = actualState.GetStateHash();
         
-        var expectedState = new BallSortState(4, 3, [[0], [0, 0], [1, 2, 2], [1, 1, 2]]);
+        var expectedState = new BallSortState(true, 4, 3, [[0], [0, 0], [1, 2, 2], [1, 1, 2]]);
         int expectedHash = expectedState.GetStateHash();
         
         actualHash.Should().Be(expectedHash);
@@ -58,7 +58,7 @@ public sealed class BallSortStateTests
     [Fact]
     public void IsSolved_Solved()
     {
-        var state = new BallSortState(4, 3, [[1,1,1], [0,0,0], [2,2,2], []]);
+        var state = new BallSortState(true, 4, 3, [[1,1,1], [0,0,0], [2,2,2], []]);
         bool isSolved = state.IsSolved();
         
         isSolved.Should().BeTrue();
@@ -67,7 +67,7 @@ public sealed class BallSortStateTests
     [Fact]
     public void IsSolved_NotSolved()
     {
-        var state = new BallSortState(4, 3, [[1], [1, 1], [0, 0, 0], [2, 2, 2]]);
+        var state = new BallSortState(true, 4, 3, [[1], [1, 1], [0, 0, 0], [2, 2, 2]]);
         bool isSolved = state.IsSolved();
         
         isSolved.Should().BeFalse();
@@ -78,10 +78,10 @@ public sealed class BallSortStateTests
     {
         var options = new BallSortOptions();
         
-        var actualState = new BallSortState(3, 3, [[0, 0, 0], [1, 1, 2], [2, 2, 1]]);
+        var actualState = new BallSortState(true, 3, 3, [[0, 0, 0], [1, 1, 2], [2, 2, 1]]);
         double actualHeuristic = actualState.GetHeuristic(options);
         
-        var expectedState = new BallSortState(3, 3, [[0, 0, 1], [0, 1, 2], [2, 2, 1]]);
+        var expectedState = new BallSortState(true, 3, 3, [[0, 0, 1], [0, 1, 2], [2, 2, 1]]);
         double expectedHeuristic = expectedState.GetHeuristic(options);
 
         actualHeuristic.Should().BeLessThan(expectedHeuristic);
@@ -91,7 +91,7 @@ public sealed class BallSortStateTests
     public void GetHeuristic_WhenExactValue()
     {
         var options = new BallSortOptions();
-        var state =  new BallSortState(4, 3, [[0, 0, 0], [1, 2, 1], [2, 3, 3], [1, 2, 3]]);
+        var state =  new BallSortState(true, 4, 3, [[0, 0, 0], [1, 2, 1], [2, 3, 3], [1, 2, 3]]);
         double heuristic = state.GetHeuristic(options);
         
         double expectedHeuristic = 5;
@@ -102,10 +102,10 @@ public sealed class BallSortStateTests
     [Fact]
     public void GetStateHash_WhenEqual()
     {
-        var actualState = new BallSortState(3, 3, [[0, 0, 0], [1, 2, 1], [2, 3, 3]]);
+        var actualState = new BallSortState(true, 3, 3, [[0, 0, 0], [1, 2, 1], [2, 3, 3]]);
         int actualHash = actualState.GetStateHash();
         
-        var expectedState = new BallSortState(3, 3, [[0, 0, 0], [1, 2, 1], [2, 3, 3]]);
+        var expectedState = new BallSortState(true, 3, 3, [[0, 0, 0], [1, 2, 1], [2, 3, 3]]);
         int expectedHash = expectedState.GetStateHash();
 
         actualHash.Should().Be(expectedHash);
@@ -114,10 +114,10 @@ public sealed class BallSortStateTests
     [Fact]
     public void GetStateHash_WhenNotEqual()
     {
-        var actualState = new BallSortState(3, 3, [[1, 0, 0], [1, 2, 1], [2, 3, 3]]);
+        var actualState = new BallSortState(true, 3, 3, [[1, 0, 0], [1, 2, 1], [2, 3, 3]]);
         int actualHash = actualState.GetStateHash();
         
-        var expectedState = new BallSortState(3, 3, [[0, 0, 0], [1, 2, 1], [2, 3, 3]]);
+        var expectedState = new BallSortState(true, 3, 3, [[0, 0, 0], [1, 2, 1], [2, 3, 3]]);
         int expectedHash = expectedState.GetStateHash();
 
         actualHash.Should().NotBe(expectedHash);

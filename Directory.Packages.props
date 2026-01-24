@@ -3,6 +3,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <MicrosoftExtensionsVersion>10.0.2</MicrosoftExtensionsVersion>
     <PlaywrightVersion>1.57.0</PlaywrightVersion>
+    <SpectreVersion>0.53.1</SpectreVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="FluentAssertions" Version="8.8.0" />
@@ -10,10 +11,10 @@
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(MicrosoftExtensionsVersion)" />
     <PackageVersion Include="Microsoft.Playwright" Version="$(PlaywrightVersion)" />
     <PackageVersion Include="Microsoft.Playwright.Xunit" Version="$(PlaywrightVersion)" />
-    <PackageVersion Include="Spectre.Console.Cli" Version="0.53.1" />
+    <PackageVersion Include="Spectre.Console.Cli" Version="$(SpectreVersion)" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
-    <PackageVersion Include="Spectre.Console.Testing" Version="0.54.0" />
+    <PackageVersion Include="Spectre.Console.Testing" Version="$(SpectreVersion)" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
   </ItemGroup>

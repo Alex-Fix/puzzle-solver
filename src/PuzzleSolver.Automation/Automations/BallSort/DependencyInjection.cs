@@ -8,6 +8,6 @@ internal static class DependencyInjection
 {
     public static IServiceCollection AddBallSort(this IServiceCollection services, IConfiguration configuration)
         => services
-            .Configure<BallSortAutomationOptions>(configuration.GetRequiredSection(nameof(BallSortAutomationOptions)))
+            .Configure<BallSortAutomationOptions>(configuration.GetSection(BallSortAutomationOptions.Name))
             .AddSingleton<IValidateOptions<BallSortAutomationOptions>, BallSortAutomationOptionsValidator>();
 }
