@@ -127,53 +127,82 @@ public sealed class BallSortState : IState<BallSortState, BallSortMove, BallSort
         if(!_sort)
             return Enumerable.Empty<BallSortMove>();
         
-        byte expectedBall = 0;
         var moves = new List<BallSortMove>();
 
-        for (int fromFlaskIndex = 0; fromFlaskIndex < _flasksCount; ++fromFlaskIndex)
+        // Sorting top balls
+        Span<byte> expectedBalls = stackalloc byte[_flasksCount];
+        for (int flaskIndex = 0; flaskIndex < _flasksCount; ++flaskIndex)
         {
-            GetTopBall(_layout, fromFlaskIndex, out _, out byte fromTopBall, false);
+            GetTopBall(_layout, flaskIndex, out _, out byte topBall, false);
+            expectedBalls[flaskIndex] = topBall;
+        }
+
+        expectedBalls.Sort();
+        
+        for (int toFlaskIndex = 0; toFlaskIndex < _flasksCount; ++toFlaskIndex)
+        {
+            byte expectedBall = expectedBalls[toFlaskIndex];
+            GetTopBall(_layout, toFlaskIndex, out _, out byte toTopBall, false);
             // Flask is already ordered
-            if (fromTopBall == expectedBall)
+            if (toTopBall == expectedBall)
                 continue;
 
-            // Move balls to empty flask
-            FillSortingMoves(Empty, fromFlaskIndex, false, ref moves);
+            // Clear current flask
+            if(toTopBall != Empty)
+                ClearFlask(toFlaskIndex, toTopBall, expectedBalls, ref moves);
 
-            // Try to move balls with previous weight to current flask 
-            bool flaskFound = FillSortingMoves(expectedBall, fromFlaskIndex, true, ref moves);
-            if (flaskFound)
-                continue;
+            // Fill current flask
+            for (int fromFlaskIndex = toFlaskIndex + 1; fromFlaskIndex < _flasksCount; ++fromFlaskIndex)
+            {
+                GetTopBall(_layout, fromFlaskIndex, out _, out byte fromTopBall, false);
+                if (fromTopBall != expectedBall)
+                    continue;
 
-            // Try to move balls with next weight to current flask
-            ++expectedBall;
-            FillSortingMoves(expectedBall, fromFlaskIndex, true, ref moves);
+                MoveFlask(fromFlaskIndex, toFlaskIndex, ref moves);
+                
+                break;
+            }
         }
 
         return moves;
     }
-    
-    private bool FillSortingMoves(int expectedBall, int fromFlaskIndex, bool reverse, ref List<BallSortMove> moves)
+
+    private void ClearFlask(int fromFlaskIndex, byte fromTopBall, ReadOnlySpan<byte> expectedBalls, ref List<BallSortMove> moves)
     {
-        for (int toFlaskIndex = reverse ? fromFlaskIndex : _flasksCount - 1; 
-             reverse ? toFlaskIndex < _flasksCount : toFlaskIndex >= fromFlaskIndex; 
-             toFlaskIndex = reverse ? toFlaskIndex + 1 : toFlaskIndex - 1 )
+        // Move balls to flask with expected weight
+        for (int toFlaskIndex = fromFlaskIndex + 1; toFlaskIndex < _flasksCount; ++toFlaskIndex)
+        {
+            byte expectedBall = expectedBalls[toFlaskIndex];
+            GetTopBall(_layout, toFlaskIndex, out _, out byte toTopBall, false);
+            if (fromTopBall != expectedBall || toTopBall != Empty)
+                continue;
+            
+            MoveFlask(fromFlaskIndex, toFlaskIndex, ref moves);
+
+            return;
+        }
+        
+        // Otherwise move balls to last empty flask
+        for (int toFlaskIndex = _flasksCount - 1; toFlaskIndex > fromFlaskIndex; --toFlaskIndex)
         {
             GetTopBall(_layout, toFlaskIndex, out _, out byte toTopBall, false);
-            if (toTopBall != expectedBall)
+            if (toTopBall != Empty)
                 continue;
+            
+            MoveFlask(fromFlaskIndex, toFlaskIndex, ref moves);
 
-            for (int ballIndex = 0; ballIndex < _flaskCapacity; ++ballIndex)
-            {
-                GetTopBall(_layout, reverse ? toFlaskIndex : fromFlaskIndex, out _, out byte ball, true);
-                SetTopBall(_layout, reverse ? fromFlaskIndex : toFlaskIndex, ball);
-                moves.Add(reverse ? new BallSortMove(toFlaskIndex, fromFlaskIndex) : new BallSortMove(fromFlaskIndex, toFlaskIndex));
-            }
-
-            return true;
+            return;
         }
-
-        return false;
+    }
+    
+    private void MoveFlask(int fromFlaskIndex, int toFlaskIndex, ref List<BallSortMove> moves)
+    {
+        for (int ballIndex = 0; ballIndex < _flaskCapacity; ++ballIndex)
+        {
+            GetTopBall(_layout, fromFlaskIndex, out _, out byte ball, true);
+            SetTopBall(_layout, toFlaskIndex, ball);
+            moves.Add(new BallSortMove(fromFlaskIndex, toFlaskIndex));
+        }
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
