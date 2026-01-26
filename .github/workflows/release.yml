@@ -11,7 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
+      VERSION: 1.0
       CONFIGURATION: Release
+      TARGET_RIDS: "osx-arm64 linux-x64 win-x64"
     
     steps:
       - name: Extract version
@@ -27,11 +29,8 @@ jobs:
         with:
           global-json-file: global.json
        
-      - name: Restoring dependencies   
-        run: dotnet restore
-        
       - name: Building solution
-        run: dotnet build -c $CONFIGURATION --no-restore
+        run: dotnet build -c $CONFIGURATION
       
       - name: Installing playwright
         shell: pwsh
@@ -39,3 +38,21 @@ jobs:
         
       - name: Testing solution
         run: dotnet test -c $CONFIGURATION --no-build
+        
+      - name: Publishing cli
+        shell: bash
+        run: |
+          for RID in $TARGET_RIDS; do
+            dotnet publish src/PuzzleSolver.Cli/PuzzleSolver.Cli.csproj \
+              -p:Version=$VERSION \
+              -c $CONFIGURATION \
+              -r $RID \
+              -o artifacts/publish/$RID \
+              -p:PublishSingleFile=true \
+              --self-contained 
+          done
+          
+      - name: Uploading artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          path: artifacts/publish

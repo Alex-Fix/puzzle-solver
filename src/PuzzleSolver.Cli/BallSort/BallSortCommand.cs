@@ -32,17 +32,17 @@ public sealed class BallSortCommand : AsyncCommand<BallSortSettings>
 
     public override async Task<int> ExecuteAsync(CommandContext context, BallSortSettings settings, CancellationToken cancellationToken)
     {
-        _console.MarkupLine("[grey]LOG:[/] Syncing settings to configuration...");
-        _configurationUpdater.Update(
-            new BallSortOptions { BeamWidth = settings.BeamWidth }, 
-            new AutomationFactoryOptions { Headless =  settings.Headless },
-            new BallSortAutomationOptions { MoveDelayMs =  settings.MoveDelayMs });
-        
-        return await _console
+        await _console
             .Status()
             .Spinner(Spinner.Known.Aesthetic)
-            .StartAsync("Initializing browser...", async ctx =>
+            .StartAsync("Syncing settings to configuration...", async ctx =>
             {
+                _configurationUpdater.Update(
+                    new BallSortOptions { BeamWidth = settings.BeamWidth }, 
+                    new AutomationFactoryOptions { Headless =  settings.Headless },
+                    new BallSortAutomationOptions { MoveDelayMs =  settings.MoveDelayMs });
+
+                ctx.Status("Initializing browser...");
                 using BallSortAutomation automation = await _automationFactory.CreateAsync<BallSortAutomation>(cancellationToken);
                 
                 ctx.Status("Navigating to puzzle Url...");
@@ -60,9 +60,10 @@ public sealed class BallSortCommand : AsyncCommand<BallSortSettings>
                 
                 ctx.Status("Playing back moves in browser...");
                 await automation.ApplyMovesAsync(moves, cancellationToken);
-                
-                _console.MarkupLine("[bold green]COMPLETE:[/] Puzzle solved successfully!");
-                return ExitCodes.Success;
             });        
+        
+        _console.MarkupLine("[bold green]COMPLETE:[/] Puzzle solved successfully!");
+        
+        return ExitCodes.Success;
     }
 }

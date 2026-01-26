@@ -6,6 +6,6 @@ public sealed class BallSortOptions : IOptions
 {
     public static string Name => nameof(BallSortOptions);
     
-    public const int DefaultBeamWidth = 250;
+    public const int DefaultBeamWidth = 500;
     public int BeamWidth { get; set; } = DefaultBeamWidth;
 }
