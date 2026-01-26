@@ -1,0 +1,41 @@
+name: Release PuzzleSolver
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+'
+
+jobs:
+  build-test-publish:
+    name: Build & Test & Publish
+    runs-on: ubuntu-latest
+    
+    env:
+      CONFIGURATION: Release
+    
+    steps:
+      - name: Extract version
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+        
+      - name: Cloning repository
+        uses: actions/checkout@v6
+        
+      - name: Installing dotnet
+        uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+       
+      - name: Restoring dependencies   
+        run: dotnet restore
+        
+      - name: Building solution
+        run: dotnet build -c $CONFIGURATION --no-restore
+      
+      - name: Installing playwright
+        shell: pwsh
+        run: artifacts/bin/PuzzleSolver.Cli/release/playwright.ps1 install --with-deps chromium
+        
+      - name: Testing solution
+        run: dotnet test -c $CONFIGURATION --no-build
