@@ -5,7 +5,8 @@
     <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    
     <Product>PuzzleSolver</Product>
     <Authors>Alex Papish</Authors>
     <Description>PuzzleSolver – puzzle solving libraries and tools</Description>
