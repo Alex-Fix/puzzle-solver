@@ -30,7 +30,7 @@ internal sealed class PlaywrightAutomationFactory : IAutomationFactory
 
         try
         {
-            int exitCode = Program.Main(["install", "chromium"]);
+            int exitCode = Program.Main(["install", "--with-deps", "chromium"]);
             if (exitCode != 0)
                 throw new DriverInstallationException(nameof(Playwright));
         }

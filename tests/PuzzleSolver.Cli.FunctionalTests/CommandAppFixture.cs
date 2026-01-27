@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PuzzleSolver.Automation;
+using PuzzleSolver.Automation.Interfaces;
 using PuzzleSolver.Cli.Infrastructure;
 using PuzzleSolver.Cli.Interfaces;
 using PuzzleSolver.Cli.Utils;
@@ -11,10 +12,14 @@ using Spectre.Console.Testing;
 namespace PuzzleSolver.Cli.FunctionalTests;
 
 // ReSharper disable once ClassNeverInstantiated.Global
-public sealed class CommandAppFixture
+public sealed class CommandAppFixture : IAsyncLifetime
 {
-    public CommandAppFixture()
+    public CommandAppTester App { get; private set; } = null!;
+    
+    public async Task InitializeAsync()
     {
+        var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
+        
         IConfigurationRoot configuration = new ConfigurationBuilder()
             .AddInMemoryCollection()
             .Build();
@@ -34,7 +39,14 @@ public sealed class CommandAppFixture
             cfg.SetExceptionHandler((ex, sp) => 
                 sp?.Resolve(typeof(IExceptionHandler)) is IExceptionHandler handler ? handler.Handle(ex) : ExitCodes.Unknown);  
         });
+
+        ITypeResolver resolver = registrar.Build();
+        IAutomationFactory factory = resolver.Resolve(typeof(IAutomationFactory)) as IAutomationFactory 
+            ?? throw new NullReferenceException(nameof(IAutomationFactory));
+
+        await factory.InstallAsync(cts.Token);
     }
-    
-    public CommandAppTester App { get; }
+
+    public Task DisposeAsync()
+        => Task.CompletedTask;
 }

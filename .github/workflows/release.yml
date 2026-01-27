@@ -60,6 +60,8 @@ jobs:
     name: Sign macOS Binary
     runs-on: macos-latest
     needs: build-test-publish
+    permissions:
+      contents: write
     
     steps:
       - name: Download artifacts
@@ -71,4 +73,5 @@ jobs:
       - name: Upload artifacts to Release
         uses: softprops/action-gh-release@v2
         with:
+          generate_release_notes: true
           files: ./*

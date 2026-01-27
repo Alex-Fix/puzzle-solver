@@ -5,6 +5,7 @@ using PuzzleSolver.Automation;
 using PuzzleSolver.Cli;
 using PuzzleSolver.Cli.BallSort;
 using PuzzleSolver.Cli.Infrastructure;
+using PuzzleSolver.Cli.Install;
 using PuzzleSolver.Cli.Interfaces;
 using PuzzleSolver.Cli.Utils;
 using PuzzleSolver.Core;
@@ -30,6 +31,8 @@ app.Configure(cfg =>
     cfg.CancellationExitCode(ExitCodes.Cancelled);
     cfg.SetExceptionHandler((ex, sp) => 
         sp?.Resolve(typeof(IExceptionHandler)) is IExceptionHandler handler ? handler.Handle(ex) : ExitCodes.Unknown);
+    cfg.AddCommand<InstallCommand>("install")
+        .WithDescription("Install browser driver and dependencies. May require sudo");
     cfg.AddCommand<BallSortCommand>("ballsort")
         .WithDescription("Solve a Ball Sort puzzle from given Url");
 });
