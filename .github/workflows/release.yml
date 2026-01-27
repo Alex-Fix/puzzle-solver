@@ -64,14 +64,11 @@ jobs:
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v7
-        with:
-          name: artifacts/dist
-          path: artifacts/dist
 
       - name: AdHoc Sign
-        run: codesign --sign - --force "artifacts/dist/puzzle-solver-osx-arm64"
+        run: codesign --sign - --force puzzle-solver-osx-arm64
 
       - name: Upload artifacts to Release
         uses: softprops/action-gh-release@v2
         with:
-          files: artifacts/dist
+          files: ./*
