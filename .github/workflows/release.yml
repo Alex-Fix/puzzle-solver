@@ -33,8 +33,8 @@ jobs:
         run: dotnet test -c $CONFIGURATION
         
       - name: Publishing cli
-        shell: bash
         run: |
+          mkdir -p artifacts/dist
           for RID in $TARGET_RIDS; do
             dotnet publish src/PuzzleSolver.Cli/PuzzleSolver.Cli.csproj \
               -p:Version=$VERSION \
@@ -42,10 +42,36 @@ jobs:
               -r $RID \
               -o artifacts/publish/$RID \
               -p:PublishSingleFile=true \
-              --self-contained 
+              --self-contained
+            
+            if [[ "$RID" == win-* ]]; then
+              mv "artifacts/publish/$RID/PuzzleSolver.Cli.exe" "artifacts/dist/puzzle-solver-$RID.exe"
+            else
+              mv "artifacts/publish/$RID/PuzzleSolver.Cli" "artifacts/dist/puzzle-solver-$RID"
+            fi
           done
           
       - name: Uploading artifacts
         uses: actions/upload-artifact@v6
         with:
-          path: artifacts/publish
+          path: artifacts/dist
+          
+  sign-macos:
+    name: Sign macOS Binary
+    runs-on: macos-latest
+    needs: build-test-publish
+    
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v7
+        with:
+          name: artifacts/dist
+          path: artifacts/dist
+
+      - name: AdHoc Sign
+        run: codesign --sign - --force "artifacts/dist/puzzle-solver-osx-arm64"
+
+      - name: Upload artifacts to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/dist
