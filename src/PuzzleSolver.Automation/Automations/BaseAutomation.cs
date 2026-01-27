@@ -27,9 +27,25 @@ public abstract class BaseAutomation<TState, TMove, TOptions> : IAutomation<TSta
         await _page.GotoAsync(url, new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
     }
 
-    public virtual async Task ConfigureAsync()
-        => await _page.ClickAsync(ConsentBtnSelector);
+    public virtual async Task ConfigureAsync() 
+    {
+        try
+        {
+            var locator = page.Locator(ConsentBtnSelector);
+            await locator.WaitForAsync(new LocatorWaitForOptions
+            {
+                    Timeout = 5000,
+                    State = WaitForSelectorState.Visible
+            });
 
+            await locator.ClickAsync();
+        }
+        catch (TimeoutException)
+        {
+            // element didn't appear — intentionally ignored
+        }
+    }
+        
     public abstract Task<TState> GetInitialStateAsync();
 
     public abstract Task ApplyMovesAsync(IEnumerable<TMove> moves, CancellationToken cancellationToken = default);
