@@ -31,7 +31,7 @@ public abstract class BaseAutomation<TState, TMove, TOptions> : IAutomation<TSta
     {
         try
         {
-            var locator = page.Locator(ConsentBtnSelector);
+            var locator = _page.Locator(ConsentBtnSelector);
             await locator.WaitForAsync(new LocatorWaitForOptions
             {
                     Timeout = 5000,
