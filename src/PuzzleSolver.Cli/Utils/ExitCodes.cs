@@ -7,5 +7,6 @@ public static class ExitCodes
     public const int UrlMismatch = 10;
     public const int InitialStateNotFound = 20;
     public const int SolutionNotFound = 30;
+    public const int DriverInstallationFailed = 40;
     public const int Cancelled = 130;
 }

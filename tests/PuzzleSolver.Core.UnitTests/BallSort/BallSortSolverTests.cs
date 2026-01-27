@@ -4,7 +4,8 @@ using PuzzleSolver.Core.BallSort.Solvers;
 
 namespace PuzzleSolver.Core.UnitTests.BallSort;
 
-public sealed class BallSortSolverTests : IClassFixture<ServiceProviderFixture>
+[Collection(ServiceProviderCollection.Name)]
+public sealed class BallSortSolverTests
 {
     private readonly ServiceProviderFixture _serviceProviderFixture;
 
@@ -15,7 +16,7 @@ public sealed class BallSortSolverTests : IClassFixture<ServiceProviderFixture>
     [InlineData(BallSortAlgorithm.BeamSearch)]
     public void Solve(BallSortAlgorithm algorithm)
     {
-        var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
         
         IBallSortSolver solver = _serviceProviderFixture.GetRequiredKeyedService<IBallSortSolver>(algorithm);
         

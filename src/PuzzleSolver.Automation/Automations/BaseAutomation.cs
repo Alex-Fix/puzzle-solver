@@ -11,6 +11,7 @@ public abstract class BaseAutomation<TState, TMove, TOptions> : IAutomation<TSta
     where TOptions : IOptions
 {
     private const string ConsentBtnSelector = "button.fc-button.fc-cta-consent.fc-primary-button";
+    private const int ConsentBtnTimeoutMs = 2_000;
     
     protected readonly IPage _page;
 
@@ -31,18 +32,10 @@ public abstract class BaseAutomation<TState, TMove, TOptions> : IAutomation<TSta
     {
         try
         {
-            var locator = _page.Locator(ConsentBtnSelector);
-            await locator.WaitForAsync(new LocatorWaitForOptions
-            {
-                    Timeout = 5000,
-                    State = WaitForSelectorState.Visible
-            });
-
-            await locator.ClickAsync();
+            await _page.ClickAsync(ConsentBtnSelector, new PageClickOptions { Timeout =  ConsentBtnTimeoutMs });
         }
         catch (TimeoutException)
         {
-            // element didn't appear — intentionally ignored
         }
     }
         

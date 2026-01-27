@@ -42,6 +42,9 @@ public sealed class BallSortCommand : AsyncCommand<BallSortSettings>
                     new AutomationFactoryOptions { Headless =  settings.Headless },
                     new BallSortAutomationOptions { MoveDelayMs =  settings.MoveDelayMs });
 
+                ctx.Status("Installing browser and dependencies...");
+                await _automationFactory.InstallAsync(cancellationToken);
+                
                 ctx.Status("Initializing browser...");
                 using BallSortAutomation automation = await _automationFactory.CreateAsync<BallSortAutomation>(cancellationToken);
                 

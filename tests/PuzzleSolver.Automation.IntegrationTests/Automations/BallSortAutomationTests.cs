@@ -7,7 +7,8 @@ using PuzzleSolver.Core.BallSort;
 
 namespace PuzzleSolver.Automation.IntegrationTests.Automations;
 
-public sealed class BallSortAutomationTests : PageTest, IClassFixture<ServiceProviderFixture>
+[Collection(ServiceProviderCollection.Name)]
+public sealed class BallSortAutomationTests : PageTest
 {
     private readonly ServiceProviderFixture _serviceProviderFixture;
 

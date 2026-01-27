@@ -28,16 +28,9 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           global-json-file: global.json
-       
-      - name: Building solution
-        run: dotnet build -c $CONFIGURATION
-      
-      - name: Installing playwright
-        shell: pwsh
-        run: artifacts/bin/PuzzleSolver.Cli/release/playwright.ps1 install --with-deps chromium
         
       - name: Testing solution
-        run: dotnet test -c $CONFIGURATION --no-build
+        run: dotnet test -c $CONFIGURATION
         
       - name: Publishing cli
         shell: bash

@@ -30,7 +30,6 @@ app.Configure(cfg =>
     cfg.CancellationExitCode(ExitCodes.Cancelled);
     cfg.SetExceptionHandler((ex, sp) => 
         sp?.Resolve(typeof(IExceptionHandler)) is IExceptionHandler handler ? handler.Handle(ex) : ExitCodes.Unknown);
-    cfg.SetInterceptor(new PlaywrightInterceptor());
     cfg.AddCommand<BallSortCommand>("ballsort")
         .WithDescription("Solve a Ball Sort puzzle from given Url");
 });
