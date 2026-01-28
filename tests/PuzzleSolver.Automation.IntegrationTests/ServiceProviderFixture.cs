@@ -19,8 +19,6 @@ public sealed class ServiceProviderFixture : IAsyncLifetime
 
     public Task InitializeAsync()
     {
-        var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
-        
         IConfigurationRoot configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
