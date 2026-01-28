@@ -6,8 +6,7 @@ using Spectre.Console.Testing;
 
 namespace PuzzleSolver.Cli.FunctionalTests;
 
-[Collection(CommandAppCollection.Name)]
-public sealed class BallSortCommandTests
+public sealed class BallSortCommandTests : IClassFixture<CommandAppFixture>
 {
     private readonly CommandAppFixture _commandAppFixture;
 

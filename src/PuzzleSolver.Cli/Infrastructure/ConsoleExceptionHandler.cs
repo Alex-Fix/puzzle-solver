@@ -20,7 +20,6 @@ internal sealed class ConsoleExceptionHandler : IExceptionHandler
             UrlMismatchException urlEx => RenderError("Url Mismatch", urlEx.Message, Color.Yellow, ExitCodes.UrlMismatch),
             InitialStateNotFoundException stateEx => RenderError("Automation Error", stateEx.Message, Color.Orange1, ExitCodes.InitialStateNotFound),
             SolutionNotFoundException solveEx => RenderError("Solver Error", solveEx.Message, Color.Red, ExitCodes.SolutionNotFound),
-            DriverInstallationException installEx => RenderError("Installation Error", installEx.Message, Color.Red3, ExitCodes.DriverInstallationFailed),
             OperationCanceledException => RenderError("Cancelled", "The operation was aborted by the user.", Color.Grey, ExitCodes.Cancelled),
             _ => RenderCritical(ex)
         };

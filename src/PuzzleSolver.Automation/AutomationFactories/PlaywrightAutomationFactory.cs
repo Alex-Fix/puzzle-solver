@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Playwright;
-using PuzzleSolver.Automation.Exceptions;
 using PuzzleSolver.Automation.Interfaces;
 
 namespace PuzzleSolver.Automation.AutomationFactories;
@@ -22,22 +21,6 @@ internal sealed class PlaywrightAutomationFactory : IAutomationFactory
         _serviceProvider = serviceProvider;
         _options = optionsMonitor.CurrentValue;
         _optionsSubscription = optionsMonitor.OnChange(value => _options = value);
-    }
-
-    public async Task InstallAsync(CancellationToken cancellationToken = default)
-    {
-        await _lock.WaitAsync(cancellationToken);
-
-        try
-        {
-            int exitCode = Program.Main(["install", "chromium"]);
-            if (exitCode != 0)
-                throw new DriverInstallationException(nameof(Playwright));
-        }
-        finally
-        {
-            _lock.Release();
-        }
     }
     
     public async Task<TAutomation> CreateAsync<TAutomation>(CancellationToken cancellationToken = default) where TAutomation : IBaseAutomation

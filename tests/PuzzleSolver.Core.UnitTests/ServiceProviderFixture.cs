@@ -10,7 +10,8 @@ public sealed class ServiceProviderFixture : IDisposable
 
     public ServiceProviderFixture()
     {
-        IConfigurationRoot configuration = new ConfigurationBuilder().Build();
+        IConfigurationRoot configuration = new ConfigurationBuilder()
+            .Build();
         
         _serviceProvider = new ServiceCollection()
             .AddCoreServices(configuration)

@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PuzzleSolver.Automation.AutomationFactories;
-using PuzzleSolver.Automation.Interfaces;
 
 namespace PuzzleSolver.Automation.IntegrationTests;
 
@@ -18,7 +17,7 @@ public sealed class ServiceProviderFixture : IAsyncLifetime
         return _serviceProvider.GetRequiredService<T>();
     }
 
-    public async Task InitializeAsync()
+    public Task InitializeAsync()
     {
         var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
         
@@ -33,8 +32,7 @@ public sealed class ServiceProviderFixture : IAsyncLifetime
             .AddAutomationServices(configuration)
             .BuildServiceProvider();
 
-        IAutomationFactory factory = GetRequiredService<IAutomationFactory>();
-        await factory.InstallAsync(cts.Token);
+        return Task.CompletedTask;
     }
 
     public async Task DisposeAsync()

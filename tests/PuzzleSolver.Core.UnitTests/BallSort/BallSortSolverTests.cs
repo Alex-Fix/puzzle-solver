@@ -4,8 +4,7 @@ using PuzzleSolver.Core.BallSort.Solvers;
 
 namespace PuzzleSolver.Core.UnitTests.BallSort;
 
-[Collection(ServiceProviderCollection.Name)]
-public sealed class BallSortSolverTests
+public sealed class BallSortSolverTests : IClassFixture<ServiceProviderFixture>
 {
     private readonly ServiceProviderFixture _serviceProviderFixture;
 
