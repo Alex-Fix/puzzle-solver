@@ -5,18 +5,29 @@
     <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    
+  </PropertyGroup>
+  
+  <PropertyGroup>
     <Product>PuzzleSolver</Product>
     <Authors>Alex Papish</Authors>
     <Description>PuzzleSolver – puzzle solving libraries and tools</Description>
     <Copyright>Copyright © Alex Papish</Copyright>
     <RepositoryUrl>https://github.com/Alex-Fix/puzzle-solver</RepositoryUrl>
+  </PropertyGroup>
     
+  <PropertyGroup>
     <!-- Versioning (default, overridden by Git tag in workflow) -->
     <Version>1.0</Version>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <FileVersion>$(Version)</FileVersion>
     <AssemblyFileVersion>$(Version)</AssemblyFileVersion>
     <AssemblyInformationalVersion>$(Version)</AssemblyInformationalVersion>
+  </PropertyGroup>
+
+  <!-- Shared playwright configurations -->
+  <PropertyGroup>
+    <PlaywrightBrowsersPath>$(ArtifactsPath)/playwright</PlaywrightBrowsersPath>
+    <RunEnvironmentVariables>$(RunEnvironmentVariables);PLAYWRIGHT_BROWSERS_PATH=$(PlaywrightBrowsersPath)</RunEnvironmentVariables>
+    <VSTestEnvironmentVariables>$(VSTestEnvironmentVariables);PLAYWRIGHT_BROWSERS_PATH=$(PlaywrightBrowsersPath)</VSTestEnvironmentVariables>
   </PropertyGroup>
 </Project>

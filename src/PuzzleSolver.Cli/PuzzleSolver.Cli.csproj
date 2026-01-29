@@ -16,4 +16,10 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
   </ItemGroup>
 
+  <Target Name="InstallPlaywrightBrowsers" AfterTargets="Build" Condition="!Exists('$(PlaywrightBrowsersPath)')">
+    <Exec Command="pwsh playwright.ps1 install --with-deps chromium"
+          EnvironmentVariables="PLAYWRIGHT_BROWSERS_PATH=$(PlaywrightBrowsersPath)"
+          WorkingDirectory="$(TargetDir)" 
+          ConsoleToMsBuild="true"/>
+  </Target>
 </Project>
