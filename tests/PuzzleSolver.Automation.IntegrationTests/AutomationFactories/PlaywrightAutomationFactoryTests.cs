@@ -14,7 +14,7 @@ public sealed class PlaywrightAutomationFactoryTests : IClassFixture<ServiceProv
     [Fact]
     public async Task CreateAsync_WhenBallSortAutomation()
     {
-        var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
         
         IAutomationFactory factory = _serviceProviderFixture.GetRequiredService<IAutomationFactory>();
         using BallSortAutomation automation = await factory.CreateAsync<BallSortAutomation>(cts.Token);

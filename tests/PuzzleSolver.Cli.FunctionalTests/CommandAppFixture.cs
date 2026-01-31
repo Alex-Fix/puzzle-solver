@@ -35,6 +35,6 @@ public sealed class CommandAppFixture
                 sp?.Resolve(typeof(IExceptionHandler)) is IExceptionHandler handler ? handler.Handle(ex) : ExitCodes.Unknown);  
         });
     }
-    
+ 
     public CommandAppTester App { get; }
 }

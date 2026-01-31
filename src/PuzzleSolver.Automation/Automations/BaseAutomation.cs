@@ -11,6 +11,7 @@ public abstract class BaseAutomation<TState, TMove, TOptions> : IAutomation<TSta
     where TOptions : IOptions
 {
     private const string ConsentBtnSelector = "button.fc-button.fc-cta-consent.fc-primary-button";
+    private const int ConsentBtnTimeoutMs = 10_000;
     
     protected readonly IPage _page;
 
@@ -27,9 +28,17 @@ public abstract class BaseAutomation<TState, TMove, TOptions> : IAutomation<TSta
         await _page.GotoAsync(url, new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle });
     }
 
-    public virtual async Task ConfigureAsync()
-        => await _page.ClickAsync(ConsentBtnSelector);
-
+    public virtual async Task ConfigureAsync() 
+    {
+        try
+        {
+            await _page.ClickAsync(ConsentBtnSelector, new PageClickOptions { Timeout =  ConsentBtnTimeoutMs });
+        }
+        catch (TimeoutException)
+        {
+        }
+    }
+        
     public abstract Task<TState> GetInitialStateAsync();
 
     public abstract Task ApplyMovesAsync(IEnumerable<TMove> moves, CancellationToken cancellationToken = default);

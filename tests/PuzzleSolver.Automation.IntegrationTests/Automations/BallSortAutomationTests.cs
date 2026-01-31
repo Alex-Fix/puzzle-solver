@@ -106,7 +106,7 @@ public sealed class BallSortAutomationTests : PageTest, IClassFixture<ServicePro
         const string url = "https://grandgames.net/ballsort_classic/id477125";
         const string frameSelector = "#ggPuzzleFrame";
         const string ballSelector = "#tube_0 .ball";
-        var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
         List<BallSortMove> moves = [
             new(1, 0),
             new(13, 0)

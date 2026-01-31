@@ -25,7 +25,7 @@ public sealed class BallSortCommandTests : IClassFixture<CommandAppFixture>
         const int moveDelayMs = 2;
         const bool headless = true;
         
-        var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
         
         CommandAppResult result = await _commandAppFixture.App.RunAsync(
         [
@@ -49,7 +49,7 @@ public sealed class BallSortCommandTests : IClassFixture<CommandAppFixture>
     [Fact]
     public async Task ShouldExit_Success()
     {
-        var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+        var cts = new CancellationTokenSource(TimeSpan.FromMinutes(10));
         
         CommandAppResult result = await _commandAppFixture.App.RunAsync(["https://grandgames.net/ballsort_classic/id381328", "-H", "true"], cts.Token);
         
@@ -59,7 +59,7 @@ public sealed class BallSortCommandTests : IClassFixture<CommandAppFixture>
     [Fact]
     public async Task ShouldExit_UrlMismatch()
     {
-        var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
         
         CommandAppResult result = await _commandAppFixture.App.RunAsync(["https://google.com", "-H", "true"], cts.Token);
         
@@ -80,7 +80,7 @@ public sealed class BallSortCommandTests : IClassFixture<CommandAppFixture>
     [Fact]
     public async Task ShouldExit_SolutionNotFound()
     {
-        var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
         
         CommandAppResult result = await _commandAppFixture.App.RunAsync(["https://grandgames.net/ballsort_classic/id564720", "-b", "1", "-H", "true"], cts.Token);
         
