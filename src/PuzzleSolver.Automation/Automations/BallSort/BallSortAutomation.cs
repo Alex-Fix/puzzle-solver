@@ -37,7 +37,7 @@ public sealed class BallSortAutomation : BaseAutomation<BallSortState, BallSortM
         _optionsSubscription = optionsMonitor.OnChange(value => _options = value);
     }
 
-    protected override string UrlStart => "https://grandgames.net/ballsort";
+    protected override string UrlStart => "https://en.grandgames.net/ballsort";
 
     public override async Task ConfigureAsync()
     {

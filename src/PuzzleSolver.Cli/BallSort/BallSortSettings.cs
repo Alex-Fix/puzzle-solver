@@ -10,7 +10,7 @@ namespace PuzzleSolver.Cli.BallSort;
 public sealed class BallSortSettings : CommandSettings
 {
     [CommandArgument(0, "<url>")]
-    [Description("Url of the Ball Sort puzzle to solve. Example: https://grandgames.net/ballsort_classic/id477125")]
+    [Description("Url of the Ball Sort puzzle to solve. Example: https://en.grandgames.net/ballsort_classic/id477125")]
     public string Url { get; init; } = string.Empty;
 
     [CommandOption("-a|--algorithm")]

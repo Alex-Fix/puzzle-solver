@@ -19,7 +19,7 @@ public sealed class BallSortCommandTests : IClassFixture<CommandAppFixture>
     [Fact]
     public async Task Should_ParseArguments()
     {
-        const string url = "https://grandgames.net/ballsort_classic/id564720";
+        const string url = "https://en.grandgames.net/ballsort_classic/id564720";
         const BallSortAlgorithm algorithm = BallSortAlgorithm.BeamSearch;
         const int beamWidth = 1;
         const int moveDelayMs = 2;
@@ -51,7 +51,7 @@ public sealed class BallSortCommandTests : IClassFixture<CommandAppFixture>
     {
         var cts = new CancellationTokenSource(TimeSpan.FromMinutes(10));
         
-        CommandAppResult result = await _commandAppFixture.App.RunAsync(["https://grandgames.net/ballsort_classic/id381328", "-H", "true"], cts.Token);
+        CommandAppResult result = await _commandAppFixture.App.RunAsync(["https://en.grandgames.net/ballsort_classic/id381328", "-H", "true"], cts.Token);
         
         result.ExitCode.Should().Be(ExitCodes.Success);
     }
@@ -72,7 +72,7 @@ public sealed class BallSortCommandTests : IClassFixture<CommandAppFixture>
         var cts = new CancellationTokenSource();
         await cts.CancelAsync();
         
-        CommandAppResult result = await _commandAppFixture.App.RunAsync(["https://grandgames.net/ballsort_classic/id564720", "-H", "true"], cts.Token);
+        CommandAppResult result = await _commandAppFixture.App.RunAsync(["https://en.grandgames.net/ballsort_classic/id564720", "-H", "true"], cts.Token);
         
         result.ExitCode.Should().Be(ExitCodes.Cancelled);
     }
@@ -82,7 +82,7 @@ public sealed class BallSortCommandTests : IClassFixture<CommandAppFixture>
     {
         var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
         
-        CommandAppResult result = await _commandAppFixture.App.RunAsync(["https://grandgames.net/ballsort_classic/id564720", "-b", "1", "-H", "true"], cts.Token);
+        CommandAppResult result = await _commandAppFixture.App.RunAsync(["https://en.grandgames.net/ballsort_classic/id564720", "-b", "1", "-H", "true"], cts.Token);
         
         result.ExitCode.Should().Be(ExitCodes.SolutionNotFound);
     }

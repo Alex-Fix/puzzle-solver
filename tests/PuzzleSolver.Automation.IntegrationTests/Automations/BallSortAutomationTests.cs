@@ -31,7 +31,7 @@ public sealed class BallSortAutomationTests : PageTest, IClassFixture<ServicePro
     [Fact]
     public async Task NavigateAsync_WhenValidUrl()
     {
-        const string url = "https://grandgames.net/ballsort_classic/id477125";
+        const string url = "https://en.grandgames.net/ballsort_classic/id477125";
         
         IOptionsMonitor<BallSortAutomationOptions> optionsMonitor = _serviceProviderFixture.GetRequiredService<IOptionsMonitor<BallSortAutomationOptions>>();
         using var automation = new BallSortAutomation(Page, optionsMonitor);
@@ -45,7 +45,7 @@ public sealed class BallSortAutomationTests : PageTest, IClassFixture<ServicePro
     [Fact]
     public async Task ConfigureAsync()
     {
-        const string url = "https://grandgames.net/ballsort_classic/id477125";
+        const string url = "https://en.grandgames.net/ballsort_classic/id477125";
         const string gameContainerSelector = "#main_game_div";
         
         IOptionsMonitor<BallSortAutomationOptions> optionsMonitor = _serviceProviderFixture.GetRequiredService<IOptionsMonitor<BallSortAutomationOptions>>();
@@ -63,7 +63,7 @@ public sealed class BallSortAutomationTests : PageTest, IClassFixture<ServicePro
     [Fact]
     public async Task GetInitialStateAsync_WhenSort()
     {
-        const string url = "https://grandgames.net/ballsort_colored/id586145";
+        const string url = "https://en.grandgames.net/ballsort_colored/id586145";
         
         IOptionsMonitor<BallSortAutomationOptions> optionsMonitor = _serviceProviderFixture.GetRequiredService<IOptionsMonitor<BallSortAutomationOptions>>();
         using var automation = new BallSortAutomation(Page, optionsMonitor);
@@ -83,7 +83,7 @@ public sealed class BallSortAutomationTests : PageTest, IClassFixture<ServicePro
     [Fact]
     public async Task GetInitialStateAsync_WhenNotSort()
     {
-        const string url = "https://grandgames.net/ballsort_classic/id477125";
+        const string url = "https://en.grandgames.net/ballsort_classic/id477125";
         
         IOptionsMonitor<BallSortAutomationOptions> optionsMonitor = _serviceProviderFixture.GetRequiredService<IOptionsMonitor<BallSortAutomationOptions>>();
         using var automation = new BallSortAutomation(Page, optionsMonitor);
@@ -103,7 +103,7 @@ public sealed class BallSortAutomationTests : PageTest, IClassFixture<ServicePro
     [Fact]
     public async Task ApplyMovesAsync()
     {
-        const string url = "https://grandgames.net/ballsort_classic/id477125";
+        const string url = "https://en.grandgames.net/ballsort_classic/id477125";
         const string frameSelector = "#ggPuzzleFrame";
         const string ballSelector = "#tube_0 .ball";
         var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
