@@ -182,6 +182,9 @@ https://en.grandgames.net/ballsort_classic/id477125
 | `-m, --movedelayms` | `600`        | Delay (ms) between moves during playback         |
 | `-h, --help`        | —            | Show help                                        |
 
+#### 🎥 Demo video
+https://private-user-images.githubusercontent.com/58109972/543418799-27017f66-2f23-4dc6-b778-bd6edeb1ffef.mp4?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Njk5NDk0OTMsIm5iZiI6MTc2OTk0OTE5MywicGF0aCI6Ii81ODEwOTk3Mi81NDM0MTg3OTktMjcwMTdmNjYtMmYyMy00ZGM2LWI3NzgtYmQ2ZWRlYjFmZmVmLm1wND9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjAyMDElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwMjAxVDEyMzMxM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTMzNTQ0NzUxY2ZmMjMwMDY5ZWQ4MTVmMjM5M2ZlYTA5OTRmNGVlZjA5MDc0ODJiYzJkNTQyYzIwYmE0NDQzMmYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.hH6BNaIlIavZQzPeNngKaP7tEsHWnCzV9FHnm7ufOhQ
+
 ---
 
 ## 🧠 Algorithms
