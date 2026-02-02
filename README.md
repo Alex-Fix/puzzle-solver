@@ -12,12 +12,13 @@ It is built with a **modular architecture**, modern **.NET 10 features**, and be
 
 * ⚙️ Modular, extensible architecture
 * 🚀 High-performance solving algorithms
-* 🧠 Multiple algorithm strategies (Beam Search)
+* 🧠 Multiple algorithm strategies (Beam Search, AStar, Bfs, Dfs)
 * 🌍 Cross-platform (Windows, macOS, Linux)
 * 🖥️ Clean CLI powered by **Spectre.Console**
 * 🎭 Browser automation via **Microsoft Playwright**
 * 🧪 Strong test coverage (unit, functional, integration)
 * 📦 Self-contained published binaries
+* 📊 Built-in benchmark project for performance analysis
 * 🔁 Fully automated CI/CD & GitHub Releases
 
 ---
@@ -29,6 +30,7 @@ src/
 ├── PuzzleSolver.Core          # Core domain models, algorithms, solvers
 ├── PuzzleSolver.Automation    # Browser automation (Playwright-based)
 ├── PuzzleSolver.Cli           # CLI entry point and commands
+├── PuzzleSolver.Benchmarks    # Benchmarks for algorithms defined in Core
 
 tests/
 ├── PuzzleSolver.Core.UnitTests
@@ -52,6 +54,11 @@ tests/
     * Command-line interface
     * Argument parsing & validation
     * Exit codes and exception handling
+* **PuzzleSolver.Benchmarks**
+
+    * Benchmark harness
+    * Solver performance tests
+    * Memory and GC profiling
 
 ---
 
@@ -174,13 +181,13 @@ https://en.grandgames.net/ballsort_classic/id477125
 
 #### Options
 
-| Option              | Default      | Description                                      |
-| ------------------- | ------------ | ------------------------------------------------ |
-| `-a, --algorithm`   | `BeamSearch` | Solving algorithm (`BeamSearch`, `AStar`, `BFS`) |
-| `-b, --beamwidth`   | `500`        | Beam width (Beam Search only)                    |
-| `-H, --headless`    | `false`      | Run browser in headless mode                     |
-| `-m, --movedelayms` | `600`        | Delay (ms) between moves during playback         |
-| `-h, --help`        | —            | Show help                                        |
+| Option              | Default      | Description                                             |
+| ------------------- | ------------ |---------------------------------------------------------|
+| `-a, --algorithm`   | `BeamSearch` | Solving algorithm (`BeamSearch`, `AStar`, `Bfs`, `Dfs`) |
+| `-b, --beamwidth`   | `500`        | Beam width (Beam Search only)                           |
+| `-H, --headless`    | `false`      | Run browser in headless mode                            |
+| `-m, --movedelayms` | `600`        | Delay (ms) between moves during playback                |
+| `-h, --help`        | —            | Show help                                               |
 
 #### 🎥 Demo video
 https://private-user-images.githubusercontent.com/58109972/543418799-27017f66-2f23-4dc6-b778-bd6edeb1ffef.mp4?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Njk5NDk0OTMsIm5iZiI6MTc2OTk0OTE5MywicGF0aCI6Ii81ODEwOTk3Mi81NDM0MTg3OTktMjcwMTdmNjYtMmYyMy00ZGM2LWI3NzgtYmQ2ZWRlYjFmZmVmLm1wND9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjAyMDElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwMjAxVDEyMzMxM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTMzNTQ0NzUxY2ZmMjMwMDY5ZWQ4MTVmMjM5M2ZlYTA5OTRmNGVlZjA5MDc0ODJiYzJkNTQyYzIwYmE0NDQzMmYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.hH6BNaIlIavZQzPeNngKaP7tEsHWnCzV9FHnm7ufOhQ
@@ -192,6 +199,9 @@ https://private-user-images.githubusercontent.com/58109972/543418799-27017f66-2f
 Currently implemented:
 
 * **Beam Search** (default)
+* **AStar**
+* **Bfs**
+* **Dfs**
 
 The architecture allows easy addition of new algorithms by implementing solver interfaces in `PuzzleSolver.Core`.
 
@@ -220,6 +230,36 @@ Run all tests:
 ```bash
 dotnet test -c Release
 ```
+
+---
+
+## 🏁 Running Benchmarks
+
+Benchmarks are in PuzzleSolver.Benchmarks:
+
+Run all benchmarks
+
+```bash
+dotnet run --project src/PuzzleSolver.Benchmarks/PuzzleSolver.Benchmarks.csproj -c Release
+```
+
+### BallSort Solver Performance
+
+| Method           | Mean          | Error       | StdDev      | Ratio     | RatioSD | Gen0      | Gen1      | Gen2     | Allocated   | Alloc Ratio |
+|----------------- |--------------:|------------:|------------:|----------:|--------:|----------:|----------:|---------:|------------:|------------:|
+| Solve_BeamSearch |      3.285 us |   0.0145 us |   0.0113 us |      1.00 |    0.00 |    1.4534 |    0.0381 |        - |     8.92 KB |        1.00 |
+| Solve_BeamSearch |  6,334.846 us | 156.2174 us | 121.9643 us |  1,928.49 |   36.24 |  562.5000 |  242.1875 |  93.7500 |  3411.58 KB |      382.38 |
+| Solve_BeamSearch |  6,698.393 us |  22.2290 us |  17.3550 us |  2,039.16 |    8.43 |  562.5000 |  281.2500 |  93.7500 |     3563 KB |      399.36 |
+| Solve_AStar      |      1.384 us |   0.0047 us |   0.0036 us |      0.42 |    0.00 |    0.4292 |    0.0019 |        - |     2.64 KB |        0.30 |
+| Solve_AStar      |     17.014 us |   0.1309 us |   0.1022 us |      5.18 |    0.03 |    4.6082 |    0.3052 |        - |     28.3 KB |        3.17 |
+| Solve_AStar      |     34.962 us |   0.2211 us |   0.1463 us |     10.64 |    0.06 |    7.3242 |    0.6714 |        - |    45.02 KB |        5.05 |
+| Solve_Bfs        |      2.589 us |   0.0048 us |   0.0032 us |      0.79 |    0.00 |    0.8011 |    0.0076 |        - |     4.92 KB |        0.55 |
+| Solve_Bfs        | 20,617.613 us |  81.7495 us |  63.8246 us |  6,276.53 |   27.90 | 1687.5000 |  718.7500 | 281.2500 |  10718.7 KB |    1,201.40 |
+| Solve_Bfs        | 42,331.286 us | 318.4200 us | 248.6014 us | 12,886.73 |   84.26 | 3250.0000 | 1166.6667 | 583.3333 | 20082.25 KB |    2,250.90 |
+| Solve_Dfs        |      1.123 us |   0.0051 us |   0.0040 us |      0.34 |    0.00 |    0.4215 |    0.0019 |        - |     2.59 KB |        0.29 |
+| Solve_Dfs        |    191.279 us |   0.9089 us |   0.7096 us |     58.23 |    0.28 |   39.0625 |   12.9395 |        - |   240.45 KB |       26.95 |
+| Solve_Dfs        |    117.233 us |   0.7651 us |   0.5973 us |     35.69 |    0.21 |   26.2451 |    6.8359 |        - |   161.56 KB |       18.11 |
+
 
 ---
 

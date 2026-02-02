@@ -14,7 +14,7 @@ public sealed class BallSortSettings : CommandSettings
     public string Url { get; init; } = string.Empty;
 
     [CommandOption("-a|--algorithm")]
-    [Description("Solving algorithm to use (BeamSearch, AStar, BFS)")]
+    [Description("Solving algorithm to use (BeamSearch, AStar, Bfs, Dfs)")]
     [DefaultValue(BallSortAlgorithm.BeamSearch)]
     public BallSortAlgorithm Algorithm { get; init; } =  BallSortAlgorithm.BeamSearch;
 

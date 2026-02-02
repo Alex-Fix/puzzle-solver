@@ -2,5 +2,8 @@ namespace PuzzleSolver.Core.BallSort;
 
 public enum BallSortAlgorithm
 {
-    BeamSearch
+    BeamSearch,
+    AStar,
+    Dfs,
+    Bfs
 }

@@ -24,4 +24,20 @@ public sealed class BallSortSolverTests : IClassFixture<ServiceProviderFixture>
 
         moves.Should().NotBeEmpty();
     }
+
+    [Theory]
+    [InlineData(BallSortAlgorithm.AStar)]
+    [InlineData(BallSortAlgorithm.Bfs)]
+    [InlineData(BallSortAlgorithm.Dfs)]
+    public void SolveSlowImplementation(BallSortAlgorithm algorithm)
+    {
+        var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
+        
+        IBallSortSolver solver = _serviceProviderFixture.GetRequiredKeyedService<IBallSortSolver>(algorithm);
+        
+        var initialState = new BallSortState(true, 7, 4, [[],[],[2,3,2,3],[0,2,0,4],[1,2,4,1],[4,3,4,1],[0,1,0,3]]);
+        IEnumerable<BallSortMove> moves = solver.Solve(initialState, cts.Token);
+
+        moves.Should().NotBeEmpty();
+    }
 }

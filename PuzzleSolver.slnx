@@ -11,6 +11,7 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/PuzzleSolver.Automation/PuzzleSolver.Automation.csproj" />
+    <Project Path="src/PuzzleSolver.Benchmarks/PuzzleSolver.Benchmarks.csproj" />
     <Project Path="src/PuzzleSolver.Cli/PuzzleSolver.Cli.csproj" />
     <Project Path="src/PuzzleSolver.Core/PuzzleSolver.Core.csproj" />
   </Folder>
