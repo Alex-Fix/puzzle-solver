@@ -11,8 +11,8 @@ internal static class DependencyInjection
         => services
             .Configure<BallSortOptions>(configuration.GetSection(BallSortOptions.Name))
             .AddSingleton<IValidateOptions<BallSortOptions>, BallSortOptionsValidator>()
-            .AddKeyedSingleton<IBallSortSolver, BeamSearchBallSortSolver>(BallSortAlgorithm.BeamSearch)
-            .AddKeyedSingleton<IBallSortSolver, AStarBallSortSolver>(BallSortAlgorithm.AStar)
-            .AddKeyedSingleton<IBallSortSolver, DfsBallSortSolver>(BallSortAlgorithm.Dfs)
-            .AddKeyedSingleton<IBallSortSolver, BfsBallSortSolver>(BallSortAlgorithm.Bfs);
+            .AddKeyedSingleton<IBallSortSolver, BeamSearchSolver>(BallSortAlgorithm.BeamSearch)
+            .AddKeyedSingleton<IBallSortSolver, AStarSolver>(BallSortAlgorithm.AStar)
+            .AddKeyedSingleton<IBallSortSolver, DfsSolver>(BallSortAlgorithm.Dfs)
+            .AddKeyedSingleton<IBallSortSolver, BfsSolver>(BallSortAlgorithm.Bfs);
 }

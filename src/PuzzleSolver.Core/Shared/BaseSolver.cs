@@ -1,24 +1,30 @@
 using Microsoft.Extensions.Options;
+using PuzzleSolver.Core.Interfaces;
 
-namespace PuzzleSolver.Core.BallSort.Solvers;
+namespace PuzzleSolver.Core.Shared;
 
-internal abstract class BaseBallSortSolver : IDisposable
+internal abstract class BaseSolver<TState, TMove, TOptions> : ISolver<TState, TMove, TOptions>, IDisposable
+    where TState : IState<TState, TMove, TOptions>
+    where TMove : struct, IMove
+    where TOptions : class, IOptions
 {
-    protected volatile BallSortOptions _options;
+    protected volatile TOptions _options;
     private readonly IDisposable? _optionsSubscription;
     
-    protected BaseBallSortSolver(IOptionsMonitor<BallSortOptions> optionsMonitor)
+    protected BaseSolver(IOptionsMonitor<TOptions> optionsMonitor)
     {
         _options = optionsMonitor.CurrentValue;
         _optionsSubscription = optionsMonitor.OnChange(value => _options = value);
     }
+
+    public abstract IEnumerable<TMove> Solve(TState initialState, CancellationToken cancellationToken = default);
     
     public void Dispose()
         => _optionsSubscription?.Dispose();
     
-    protected static IEnumerable<BallSortMove> ReconstructPath(SearchNode endNode)
+    protected static IEnumerable<TMove> ReconstructPath(SearchNode endNode)
     {
-        var stack = new Stack<BallSortMove>();
+        var stack = new Stack<TMove>();
         
         for (SearchNode node = endNode; node.HasMove; node = node.Parent!)
             stack.Push(node.Move);
@@ -29,12 +35,12 @@ internal abstract class BaseBallSortSolver : IDisposable
     protected sealed class SearchNode
     {
         // Made fields for higher performance
-        public readonly BallSortState State;
-        public readonly BallSortMove Move;
+        public readonly TState State;
+        public readonly TMove Move;
         public readonly SearchNode? Parent;
         public readonly bool HasMove;
 
-        public SearchNode(BallSortState state, BallSortMove move, SearchNode parent)
+        public SearchNode(TState state, TMove move, SearchNode parent)
         {
             State = state;
             Move = move;
@@ -42,7 +48,7 @@ internal abstract class BaseBallSortSolver : IDisposable
             HasMove = true;
         }
 
-        public SearchNode(BallSortState state)
+        public SearchNode(TState state)
         {
             State = state;
             HasMove = false;

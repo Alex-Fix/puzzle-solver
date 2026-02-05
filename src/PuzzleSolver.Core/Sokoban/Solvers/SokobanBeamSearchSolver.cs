@@ -1,15 +1,16 @@
 using Microsoft.Extensions.Options;
 using PuzzleSolver.Core.Exceptions;
+using PuzzleSolver.Core.Shared;
 
-namespace PuzzleSolver.Core.BallSort.Solvers;
+namespace PuzzleSolver.Core.Sokoban.Solvers;
 
-internal sealed class BeamSearchBallSortSolver : BaseBallSortSolver, IBallSortSolver
+internal sealed class SokobanBeamSearchSolver : BaseSolver<SokobanState, SokobanMove, SokobanOptions>, ISokobanSolver
 {
-    public BeamSearchBallSortSolver(IOptionsMonitor<BallSortOptions> optionsMonitor) : base(optionsMonitor)
+    public SokobanBeamSearchSolver(IOptionsMonitor<SokobanOptions> optionsMonitor) : base(optionsMonitor)
     {
     }
-    
-    public IEnumerable<BallSortMove> Solve(BallSortState initialState, CancellationToken cancellationToken = default) 
+
+    public override IEnumerable<SokobanMove> Solve(SokobanState initialState, CancellationToken cancellationToken = default)
     {
         var visited = new HashSet<int> { initialState.GetStateHash() };
         var frontier = new List<SearchNode>(_options.BeamWidth) { new(initialState) };
@@ -23,14 +24,14 @@ internal sealed class BeamSearchBallSortSolver : BaseBallSortSolver, IBallSortSo
             nextCandidates.Clear();
             foreach (var node in frontier)
             {
-                BallSortState state = node.State;
+                SokobanState state = node.State;
 
-                foreach (BallSortMove move in state.GetValidMoves())
+                foreach (SokobanMove move in state.GetValidMoves())
                 {
-                    BallSortState nextState = state.Apply(move);
+                    SokobanState nextState = state.Apply(move);
 
                     if (nextState.IsSolved())
-                        return ReconstructPath(new SearchNode(nextState, move, node)).Concat(nextState.GetSortingMoves());
+                        return ReconstructPath(new SearchNode(nextState, move, node));
                         
                     if (!visited.Add(nextState.GetStateHash())) 
                         continue;

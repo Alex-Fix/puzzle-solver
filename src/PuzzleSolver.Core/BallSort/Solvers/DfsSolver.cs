@@ -1,15 +1,16 @@
 using Microsoft.Extensions.Options;
 using PuzzleSolver.Core.Exceptions;
+using PuzzleSolver.Core.Shared;
 
 namespace PuzzleSolver.Core.BallSort.Solvers;
 
-internal sealed class DfsBallSortSolver : BaseBallSortSolver, IBallSortSolver
+internal sealed class DfsSolver : BaseSolver<BallSortState, BallSortMove, BallSortOptions>, IBallSortSolver
 {
-    public DfsBallSortSolver(IOptionsMonitor<BallSortOptions> optionsMonitor) : base(optionsMonitor)
+    public DfsSolver(IOptionsMonitor<BallSortOptions> optionsMonitor) : base(optionsMonitor)
     {
     }
 
-    public IEnumerable<BallSortMove> Solve(BallSortState initialState, CancellationToken cancellationToken = default)
+    public override IEnumerable<BallSortMove> Solve(BallSortState initialState, CancellationToken cancellationToken = default)
     {
         var visited = new HashSet<int> { initialState.GetStateHash() };
         var frontier = new Stack<SearchNode>();
