@@ -2,8 +2,10 @@ namespace PuzzleSolver.Core.Sokoban;
 
 public enum SokobanMoveDirection : byte
 {
-    Up,
+    Start,
+    Up = Start,
     Right,
     Down,
-    Left
+    Left,
+    End
 }
