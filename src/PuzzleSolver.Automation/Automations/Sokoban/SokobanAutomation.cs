@@ -9,9 +9,11 @@ namespace PuzzleSolver.Automation.Automations.Sokoban;
 public sealed class SokobanAutomation : BaseAutomation<SokobanState, SokobanMove, SokobanOptions>, IDisposable
 {
     private const string PlayBtnSelector = "#timeradd_but";
+    private const string FrameSelector = "#ggPuzzleFrame";
     private const string GameContainerSelector = "#main_game_div";
     private const string ScriptSelector = GameContainerSelector + " > script";
-
+    private const string CanvasSelector = "#gamediv > canvas";
+    
     private const string WidthGroup = "sx";
     private const string HeightGroup = "sy";
     private const string LayoutGroup = "p";
@@ -61,25 +63,24 @@ public sealed class SokobanAutomation : BaseAutomation<SokobanState, SokobanMove
 
     public override async Task ApplyMovesAsync(IEnumerable<SokobanMove> moves, CancellationToken cancellationToken = default)
     {
-        foreach (SokobanMove move in moves)
+        foreach (var move in moves)
         {
-            if (cancellationToken.IsCancellationRequested)
-                throw new OperationCanceledException(nameof(ApplyMovesAsync));
+            cancellationToken.ThrowIfCancellationRequested();
 
-            string key = move.Direction switch
+            (int dx, int dy) = move.Direction switch
             {
-                SokobanMoveDirection.Up => "ArrowUp",
-                SokobanMoveDirection.Right => "ArrowRight",
-                SokobanMoveDirection.Down => "ArrowDown",
-                SokobanMoveDirection.Left => "ArrowLeft",
-                _   => throw new ArgumentException($"Unknown direction: {move.Direction}")
+                SokobanMoveDirection.Up => (0, -1),
+                SokobanMoveDirection.Right => (1, 0),
+                SokobanMoveDirection.Down => (0, 1),
+                SokobanMoveDirection.Left => (-1, 0),
+                _ => throw new ArgumentException($"Unknown: {move.Direction}")
             };
-            
-            await _page.Keyboard.PressAsync(key);
+
+            await _page.FrameLocator(FrameSelector).Locator(CanvasSelector).EvaluateAsync("(el, [dx, dy]) => TryKeyMove(dx, dy)", new object[] { dx, dy });
             await Task.Delay(_options.MoveDelayMs, cancellationToken);
         }
     }
-
+    
     public void Dispose()
         => _optionsSubscription?.Dispose();
 }

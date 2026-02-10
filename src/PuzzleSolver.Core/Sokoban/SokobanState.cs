@@ -106,7 +106,6 @@ public sealed class SokobanState : IState<SokobanState, SokobanMove, SokobanOpti
         var boxIndices = new List<int>();
         var targetIndices = new List<int>();
 
-        // 1. Identify all boxes and targets
         for (int i = 0; i < _layout.Length; i++)
         {
             if (_layout[i].HasFlag(CellType.Box)) boxIndices.Add(i);
@@ -117,14 +116,11 @@ public sealed class SokobanState : IState<SokobanState, SokobanMove, SokobanOpti
 
         foreach (int boxIdx in boxIndices)
         {
-            // Skip boxes already on targets
             if (_layout[boxIdx].HasFlag(CellType.Target)) continue;
 
-            // 2. Immediate Deadlock Check (Corner Detection)
             if (IsPermanentDeadlock(boxIdx))
                 return double.PositiveInfinity;
 
-            // 3. Calculate Manhattan distance to the closest target
             int boxX = boxIdx % _width;
             int boxY = boxIdx / _width;
             
@@ -141,8 +137,6 @@ public sealed class SokobanState : IState<SokobanState, SokobanMove, SokobanOpti
             totalManhattanDistance += minDistance;
         }
 
-        // 4. Add Player distance to the nearest box (prevents wandering)
-        // This is a subtle tie-breaker that helps the player stay focused.
         int playerIdx = FindIndex(_layout, CellType.Player);
         if (boxIndices.Count > 0)
         {
@@ -157,7 +151,6 @@ public sealed class SokobanState : IState<SokobanState, SokobanMove, SokobanOpti
 
     private bool IsPermanentDeadlock(int index)
     {
-        // Check if box is in a corner (Wall-Box-Wall)
         bool up = _layout[GetOffset(index, SokobanMoveDirection.Up)].HasFlag(CellType.Wall);
         bool down = _layout[GetOffset(index, SokobanMoveDirection.Down)].HasFlag(CellType.Wall);
         bool left = _layout[GetOffset(index, SokobanMoveDirection.Left)].HasFlag(CellType.Wall);
