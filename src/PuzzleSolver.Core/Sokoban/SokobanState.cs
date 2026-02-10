@@ -19,22 +19,6 @@ public sealed class SokobanState : IState<SokobanState, SokobanMove, SokobanOpti
         PlayerOnTarget = Player | Target
     }
     
-    private static IReadOnlyDictionary<SokobanMoveDirection, SokobanMoveDirection> _deadLocked = new Dictionary<SokobanMoveDirection, SokobanMoveDirection>
-    {
-        [SokobanMoveDirection.Up] = SokobanMoveDirection.Right,
-        [SokobanMoveDirection.Right] = SokobanMoveDirection.Down,
-        [SokobanMoveDirection.Down] = SokobanMoveDirection.Left,
-        [SokobanMoveDirection.Left] = SokobanMoveDirection.Up
-    };  
-    
-    private static IReadOnlyDictionary<SokobanMoveDirection, SokobanMoveDirection> _semiLocked = new Dictionary<SokobanMoveDirection, SokobanMoveDirection>
-    {
-        [SokobanMoveDirection.Up] = SokobanMoveDirection.Down,
-        [SokobanMoveDirection.Right] = SokobanMoveDirection.Left,
-        [SokobanMoveDirection.Down] = SokobanMoveDirection.Up,
-        [SokobanMoveDirection.Left] = SokobanMoveDirection.Right
-    };
-
     private readonly int _height;
     private readonly int _width;
     private readonly CellType[] _layout;
@@ -200,7 +184,7 @@ public sealed class SokobanState : IState<SokobanState, SokobanMove, SokobanOpti
                 SokobanMoveDirection.Right => index + 1,
                 SokobanMoveDirection.Down => index + _width,
                 SokobanMoveDirection.Left => index - 1,
-                _ => throw new ArgumentOutOfRangeException()
+                _   => throw new ArgumentException($"Unknown direction: {direction}")
             };
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
