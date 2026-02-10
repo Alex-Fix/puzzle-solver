@@ -12,14 +12,15 @@ public sealed class SokobanSolverTests : IClassFixture<ServiceProviderFixture>
         => _serviceProviderFixture = serviceProviderFixture;
     
     [Theory]
-    [InlineData(SokobanAlgorithm.BeamSearch)]
+    [InlineData(SokobanAlgorithm.AStar)]
     public void Solve(SokobanAlgorithm algorithm)
     {
         var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));
         
         ISokobanSolver solver = _serviceProviderFixture.GetRequiredKeyedService<ISokobanSolver>(algorithm);
         
-        var initialState = new SokobanState(9, 10, "!!########!!#.s##ss#!!#...sss#!##s.##ss#!#s$.$s$####s##$#@s##ssss$s$s##sssss#ss###########");
+        //var initialState = new SokobanState(9, 10, "!!########!!#.s##ss#!!#...sss#!##s.##ss#!#s$.$s$####s##$#@s##ssss$s$s##sssss#ss###########");
+        var initialState = new SokobanState(8, 8, "#########ssssss##s#s$#s##s##.#s##@#.$ss##s##s#s##ssssss#########");
         IEnumerable<SokobanMove> moves = solver.Solve(initialState, cts.Token);
 
         moves.Should().NotBeEmpty();

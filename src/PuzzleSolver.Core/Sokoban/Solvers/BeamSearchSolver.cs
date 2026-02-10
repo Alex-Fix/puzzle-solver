@@ -4,9 +4,9 @@ using PuzzleSolver.Core.Shared;
 
 namespace PuzzleSolver.Core.Sokoban.Solvers;
 
-internal sealed class SokobanBeamSearchSolver : BaseSolver<SokobanState, SokobanMove, SokobanOptions>, ISokobanSolver
+internal sealed class BeamSearchSolver : BaseSolver<SokobanState, SokobanMove, SokobanOptions>, ISokobanSolver
 {
-    public SokobanBeamSearchSolver(IOptionsMonitor<SokobanOptions> optionsMonitor) : base(optionsMonitor)
+    public BeamSearchSolver(IOptionsMonitor<SokobanOptions> optionsMonitor) : base(optionsMonitor)
     {
     }
 

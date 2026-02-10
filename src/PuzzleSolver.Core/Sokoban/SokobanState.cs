@@ -9,10 +9,10 @@ public sealed class SokobanState : IState<SokobanState, SokobanMove, SokobanOpti
     [Flags]
     private enum CellType : byte
     {
-        Empty  = 0,
-        Wall   = 1 << 0,
+        Empty = 0,
+        Wall = 1 << 0,
         Target = 1 << 1,
-        Box    = 1 << 2,
+        Box = 1 << 2,
         Player = 1 << 3,
         Unbound = 1 << 4,
         BoxOnTarget = Box | Target,
@@ -116,47 +116,73 @@ public sealed class SokobanState : IState<SokobanState, SokobanMove, SokobanOpti
 
         return true;
     }
-
+    
     public double GetHeuristic(SokobanOptions options)
     {
-        double score = 0;
+        var boxIndices = new List<int>();
+        var targetIndices = new List<int>();
 
-        int index = 0;
-        while (true)
+        // 1. Identify all boxes and targets
+        for (int i = 0; i < _layout.Length; i++)
         {
-            index = FindIndex(_layout, CellType.Box, index);
-            if(index < 0)
-                break;
-
-            CellType cell = _layout[index];
-            if (cell is CellType.BoxOnTarget)
-                continue;
-
-            foreach ((SokobanMoveDirection first, SokobanMoveDirection second) in _deadLocked)
-            {
-                int firstOffset = GetOffset(index, first);
-                int secondOffset = GetOffset(index, second);
-
-                if (!IsWalkable(_layout, firstOffset) && !IsWalkable(_layout, secondOffset))
-                {
-                    score = double.PositiveInfinity;
-                    break;
-                }
-            }
-
-            foreach ((SokobanMoveDirection first, SokobanMoveDirection second) in _semiLocked)
-            {
-                int firstOffset = GetOffset(index, first);
-                int secondOffset = GetOffset(index, second);
-
-                if (!IsWalkable(_layout, firstOffset) && !IsWalkable(_layout, secondOffset))
-                    score += 10;
-            }
-            
-            ++score;
+            if (_layout[i].HasFlag(CellType.Box)) boxIndices.Add(i);
+            if (_layout[i].HasFlag(CellType.Target)) targetIndices.Add(i);
         }
 
-        return score;
+        double totalManhattanDistance = 0;
+
+        foreach (int boxIdx in boxIndices)
+        {
+            // Skip boxes already on targets
+            if (_layout[boxIdx].HasFlag(CellType.Target)) continue;
+
+            // 2. Immediate Deadlock Check (Corner Detection)
+            if (IsPermanentDeadlock(boxIdx))
+                return double.PositiveInfinity;
+
+            // 3. Calculate Manhattan distance to the closest target
+            int boxX = boxIdx % _width;
+            int boxY = boxIdx / _width;
+            
+            int minDistance = int.MaxValue;
+            foreach (int targetIdx in targetIndices)
+            {
+                int targetX = targetIdx % _width;
+                int targetY = targetIdx / _width;
+                
+                int dist = Math.Abs(boxX - targetX) + Math.Abs(boxY - targetY);
+                if (dist < minDistance) minDistance = dist;
+            }
+            
+            totalManhattanDistance += minDistance;
+        }
+
+        // 4. Add Player distance to the nearest box (prevents wandering)
+        // This is a subtle tie-breaker that helps the player stay focused.
+        int playerIdx = FindIndex(_layout, CellType.Player);
+        if (boxIndices.Count > 0)
+        {
+            int pX = playerIdx % _width;
+            int pY = playerIdx / _width;
+            int minPlayerDist = boxIndices.Min(b => Math.Abs(pX - (b % _width)) + Math.Abs(pY - (b / _width)));
+            totalManhattanDistance += (minPlayerDist - 1); 
+        }
+
+        return totalManhattanDistance;
+    }
+
+    private bool IsPermanentDeadlock(int index)
+    {
+        // Check if box is in a corner (Wall-Box-Wall)
+        bool up = _layout[GetOffset(index, SokobanMoveDirection.Up)].HasFlag(CellType.Wall);
+        bool down = _layout[GetOffset(index, SokobanMoveDirection.Down)].HasFlag(CellType.Wall);
+        bool left = _layout[GetOffset(index, SokobanMoveDirection.Left)].HasFlag(CellType.Wall);
+        bool right = _layout[GetOffset(index, SokobanMoveDirection.Right)].HasFlag(CellType.Wall);
+
+        if ((up && left) || (up && right) || (down && left) || (down && right))
+            return true;
+
+        return false;
     }
 
     public int GetStateHash()

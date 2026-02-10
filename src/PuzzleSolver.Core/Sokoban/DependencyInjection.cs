@@ -11,5 +11,6 @@ internal static class DependencyInjection
         => serviceCollection
             .Configure<SokobanOptions>(configuration.GetSection(SokobanOptions.Name))
             .AddSingleton<IValidateOptions<SokobanOptions>, SokobanOptionsValidator>()
-            .AddKeyedSingleton<ISokobanSolver, SokobanBeamSearchSolver>(SokobanAlgorithm.BeamSearch);
+            .AddKeyedSingleton<ISokobanSolver, BeamSearchSolver>(SokobanAlgorithm.BeamSearch)
+            .AddKeyedSingleton<ISokobanSolver, AStarSolver>(SokobanAlgorithm.AStar);
 }

@@ -84,7 +84,7 @@ public sealed class SokobanStateTests
     }
     
     [Fact]
-    public void GetHashCode_WhenEqual()
+    public void GetStateHash_WhenEqual()
     {
         var actualState = new SokobanState(9, 10, "!!########!!#.s##ss#!!#...sss#!##s.##ss#!#s$.$s$####s##$#@s##ssss$s$s##sssss#ss###########");
         int actualHash = actualState.GetStateHash();
@@ -96,7 +96,7 @@ public sealed class SokobanStateTests
     }
 
     [Fact]
-    public void GetHashCode_WhenNotEqual()
+    public void GetStateHash_WhenNotEqual()
     {
         var actualState = new SokobanState(9, 10, "!!########!!#.s##ss#!!#...sss#!##s.##ss#!#s$.$s$####s##$#@s##ssss$s$s##sssss#ss###########");
         int actualHash = actualState.GetStateHash();
