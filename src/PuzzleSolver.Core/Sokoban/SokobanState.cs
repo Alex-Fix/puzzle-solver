@@ -149,19 +149,6 @@ public sealed class SokobanState : IState<SokobanState, SokobanMove, SokobanOpti
         return totalManhattanDistance;
     }
 
-    private bool IsPermanentDeadlock(int index)
-    {
-        bool up = _layout[GetOffset(index, SokobanMoveDirection.Up)].HasFlag(CellType.Wall);
-        bool down = _layout[GetOffset(index, SokobanMoveDirection.Down)].HasFlag(CellType.Wall);
-        bool left = _layout[GetOffset(index, SokobanMoveDirection.Left)].HasFlag(CellType.Wall);
-        bool right = _layout[GetOffset(index, SokobanMoveDirection.Right)].HasFlag(CellType.Wall);
-
-        if ((up && left) || (up && right) || (down && left) || (down && right))
-            return true;
-
-        return false;
-    }
-
     public int GetStateHash()
     {
         var hashCode = new HashCode();
@@ -200,4 +187,21 @@ public sealed class SokobanState : IState<SokobanState, SokobanMove, SokobanOpti
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static bool IsWalkable(ReadOnlySpan<CellType> layout, int index)
         => layout[index] is CellType.Empty or CellType.Target;
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private bool IsPermanentDeadlock(int index)
+    {
+        for (SokobanMoveDirection direction = SokobanMoveDirection.Start; direction < SokobanMoveDirection.End; ++direction)
+        {
+            SokobanMoveDirection neighbour = (SokobanMoveDirection)(((byte)direction + 1) % (byte)SokobanMoveDirection.End);
+
+            int directionOffset = GetOffset(index, direction);
+            int neighbourOffset = GetOffset(index, neighbour);
+
+            if (_layout[directionOffset].HasFlag(CellType.Wall) && _layout[neighbourOffset].HasFlag(CellType.Wall))
+                return true;
+        }
+
+        return false;
+    }
 }
