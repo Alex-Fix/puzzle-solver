@@ -31,7 +31,7 @@ internal sealed class BeamSearchSolver : BaseSolver<BallSortState, BallSortMove,
                     BallSortState nextState = state.Apply(move);
 
                     if (nextState.IsSolved())
-                        return ReconstructPath(new SearchNode(nextState, move, node)).Concat(nextState.GetSortingMoves());
+                        return ReconstructPath(new SearchNode(nextState, move, node));
                         
                     if (!visited.Add(nextState.GetStateHash())) 
                         continue;
@@ -47,4 +47,7 @@ internal sealed class BeamSearchSolver : BaseSolver<BallSortState, BallSortMove,
 
         throw new SolutionNotFoundException();
     }
+
+    protected override IEnumerable<BallSortMove> ReconstructPath(SearchNode endNode)
+        => base.ReconstructPath(endNode).Concat(endNode.State.GetSortingMoves());
 }

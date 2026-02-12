@@ -22,7 +22,7 @@ internal abstract class BaseSolver<TState, TMove, TOptions> : ISolver<TState, TM
     public void Dispose()
         => _optionsSubscription?.Dispose();
     
-    protected static IEnumerable<TMove> ReconstructPath(SearchNode endNode)
+    protected virtual IEnumerable<TMove> ReconstructPath(SearchNode endNode)
     {
         var stack = new Stack<TMove>();
         

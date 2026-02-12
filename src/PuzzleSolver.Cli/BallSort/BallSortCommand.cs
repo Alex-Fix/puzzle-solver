@@ -11,6 +11,7 @@ using Spectre.Console.Cli;
 
 namespace PuzzleSolver.Cli.BallSort;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public sealed class BallSortCommand : AsyncCommand<BallSortSettings>
 {
     private readonly IAnsiConsole _console;

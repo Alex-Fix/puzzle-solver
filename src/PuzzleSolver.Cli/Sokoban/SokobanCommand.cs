@@ -11,6 +11,7 @@ using Spectre.Console.Cli;
 
 namespace PuzzleSolver.Cli.Sokoban;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public sealed class SokobanCommand : AsyncCommand<SokobanSettings>
 {
     private readonly IAnsiConsole _console;
