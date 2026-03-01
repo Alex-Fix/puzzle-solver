@@ -1,15 +1,19 @@
 using Microsoft.Extensions.Options;
 using PuzzleSolver.Core.Exceptions;
+using PuzzleSolver.Core.Interfaces;
 
-namespace PuzzleSolver.Core.BallSort.Solvers;
+namespace PuzzleSolver.Core.Shared;
 
-internal sealed class BfsBallSortSolver : BaseBallSortSolver, IBallSortSolver
+internal abstract class BaseBfsSolver<TState, TMove, TOptions> : BaseSolver<TState, TMove, TOptions>
+    where TState : IState<TState, TMove, TOptions>
+    where TMove : struct, IMove
+    where TOptions : class, IOptions
 {
-    public BfsBallSortSolver(IOptionsMonitor<BallSortOptions> optionsMonitor) : base(optionsMonitor)
+    protected BaseBfsSolver(IOptionsMonitor<TOptions> optionsMonitor) : base(optionsMonitor)
     {
     }
 
-    public IEnumerable<BallSortMove> Solve(BallSortState initialState, CancellationToken cancellationToken = default)
+    public override IEnumerable<TMove> Solve(TState initialState, CancellationToken cancellationToken = default)
     {
         var visited = new HashSet<int> { initialState.GetStateHash() };
         var frontier = new Queue<SearchNode>();
@@ -20,13 +24,13 @@ internal sealed class BfsBallSortSolver : BaseBallSortSolver, IBallSortSolver
             if(cancellationToken.IsCancellationRequested) 
                 throw new OperationCanceledException(nameof(Solve));
             
-            BallSortState state = node.State;
-            foreach (BallSortMove move in state.GetValidMoves())
+            TState state = node.State;
+            foreach (TMove move in state.GetValidMoves())
             {
-                BallSortState nextState = state.Apply(move);
+                TState nextState = state.Apply(move);
 
                 if (nextState.IsSolved())
-                    return ReconstructPath(new SearchNode(nextState, move, node)).Concat(nextState.GetSortingMoves());
+                    return ReconstructPath(new SearchNode(nextState, move, node));
                     
                 if (!visited.Add(nextState.GetStateHash())) 
                     continue;
