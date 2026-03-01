@@ -157,6 +157,7 @@ OPTIONS:
 
 COMMANDS:
     ballsort <url>    Solve a Ball Sort puzzle from given Url
+    sokoban <url>    Solve a Sokoban puzzle from given Url
 ```
 
 ### Ball Sort Solver
@@ -223,6 +224,7 @@ https://en.grandgames.net/sokoban/id195119
 | `-h, --help`        | —            | Show help                                  |
 
 #### 🎥 Demo video
+https://private-user-images.githubusercontent.com/58109972/556598635-73e0ddff-4b9f-4e8f-a102-e96e77fe31be.mp4?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzIzNzkyNjQsIm5iZiI6MTc3MjM3ODk2NCwicGF0aCI6Ii81ODEwOTk3Mi81NTY1OTg2MzUtNzNlMGRkZmYtNGI5Zi00ZThmLWExMDItZTk2ZTc3ZmUzMWJlLm1wND9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjAzMDElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwMzAxVDE1MjkyNFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTUzMDRjNTdiNzRhOTI1ZmNmM2QyNjcwNDRjYzdjZTMwMzFmZTk5NzhkOGNmYWE3YjVmNTIwOTdlOWI4NjVmZDAmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.u3zQwDBt3BiwzAPSj7kMi0j3FB9cYSQ-CW7yU-iyovw
 
 ---
 
