@@ -12,7 +12,7 @@ public sealed class SokobanSolverTests : IClassFixture<ServiceProviderFixture>
         => _serviceProviderFixture = serviceProviderFixture;
     
     [Theory]
-    [InlineData(SokobanAlgorithm.AStar)]
+    [InlineData(SokobanAlgorithm.ParallelAStar)]
     public void Solve(SokobanAlgorithm algorithm)
     {
         var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));

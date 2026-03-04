@@ -14,9 +14,9 @@ public sealed class SokobanSettings: CommandSettings
     public string Url { get; init; } = string.Empty;
 
     [CommandOption("-a|--algorithm")]
-    [Description("Solving algorithm to use (AStar, BeamSearch)")]
-    [DefaultValue(SokobanAlgorithm.AStar)]
-    public SokobanAlgorithm Algorithm { get; init; } =  SokobanAlgorithm.AStar;
+    [Description("Solving algorithm to use (ParallelAStar, AStar, BeamSearch)")]
+    [DefaultValue(SokobanAlgorithm.ParallelAStar)]
+    public SokobanAlgorithm Algorithm { get; init; } =  SokobanAlgorithm.ParallelAStar;
 
     [CommandOption("-b|--beamwidth")]
     [Description("Beam Width for algorithm")]

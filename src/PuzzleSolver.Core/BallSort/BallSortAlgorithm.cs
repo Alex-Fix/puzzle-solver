@@ -4,6 +4,7 @@ public enum BallSortAlgorithm
 {
     BeamSearch,
     AStar,
+    ParallelAStar,
     Dfs,
     Bfs
 }

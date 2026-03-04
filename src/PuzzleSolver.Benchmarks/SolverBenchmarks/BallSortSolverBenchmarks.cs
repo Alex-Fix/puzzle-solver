@@ -18,6 +18,7 @@ public class BallSortSolverBenchmarks
     
     private IBallSortSolver _beamSearchSolver = null!;
     private IBallSortSolver _astarSolver = null!;
+    private IBallSortSolver _parallelAStarSolver = null!;
     private IBallSortSolver _bfsSolver = null!;
     private IBallSortSolver _dfsSolver = null!;
 
@@ -43,6 +44,7 @@ public class BallSortSolverBenchmarks
         
         _beamSearchSolver = _serviceProvider.GetRequiredKeyedService<IBallSortSolver>(BallSortAlgorithm.BeamSearch);
         _astarSolver = _serviceProvider.GetRequiredKeyedService<IBallSortSolver>(BallSortAlgorithm.AStar);
+        _parallelAStarSolver = _serviceProvider.GetRequiredKeyedService<IBallSortSolver>(BallSortAlgorithm.ParallelAStar);
         _bfsSolver = _serviceProvider.GetRequiredKeyedService<IBallSortSolver>(BallSortAlgorithm.Bfs);
         _dfsSolver = _serviceProvider.GetRequiredKeyedService<IBallSortSolver>(BallSortAlgorithm.Dfs);
     }
@@ -58,6 +60,10 @@ public class BallSortSolverBenchmarks
     [Benchmark]
     public void Solve_AStar()
         => _astarSolver.Solve(InitialState).ToList();
+    
+    [Benchmark]
+    public void Solve_ParallelAStar()
+        => _parallelAStarSolver.Solve(InitialState).ToList();
     
     [Benchmark]
     public void Solve_Bfs()

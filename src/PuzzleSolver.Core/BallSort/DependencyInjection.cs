@@ -13,6 +13,7 @@ internal static class DependencyInjection
             .AddSingleton<IValidateOptions<BallSortOptions>, BallSortOptionsValidator>()
             .AddKeyedSingleton<IBallSortSolver, BeamSearchSolver>(BallSortAlgorithm.BeamSearch)
             .AddKeyedSingleton<IBallSortSolver, AStarSolver>(BallSortAlgorithm.AStar)
+            .AddKeyedSingleton<IBallSortSolver, ParallelAStarSolver>(BallSortAlgorithm.ParallelAStar)
             .AddKeyedSingleton<IBallSortSolver, DfsSolver>(BallSortAlgorithm.Dfs)
             .AddKeyedSingleton<IBallSortSolver, BfsSolver>(BallSortAlgorithm.Bfs);
 }
