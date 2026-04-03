@@ -6,6 +6,7 @@ using PuzzleSolver.Cli;
 using PuzzleSolver.Cli.BallSort;
 using PuzzleSolver.Cli.Infrastructure;
 using PuzzleSolver.Cli.Interfaces;
+using PuzzleSolver.Cli.Nonogram;
 using PuzzleSolver.Cli.Sokoban;
 using PuzzleSolver.Cli.Utils;
 using PuzzleSolver.Core;
@@ -35,6 +36,8 @@ app.Configure(cfg =>
         .WithDescription("Solve a Ball Sort puzzle from given Url");
     cfg.AddCommand<SokobanCommand>("sokoban")
         .WithDescription("Solve a Sokoban puzzle from given Url");
+    cfg.AddCommand<NonogramCommand>("nonogram")
+        .WithDescription("Solve a Nonogram puzzle from given Url");
 });
 
 return await app.RunAsync(args);

@@ -20,7 +20,7 @@ public abstract class BaseAutomation<TState, TMove, TOptions> : IAutomation<TSta
 
     protected abstract string UrlStart { get; }
 
-    public async Task NavigateAsync(string url)
+    public virtual async Task NavigateAsync(string url)
     {
         if (!url.StartsWith(UrlStart))
             throw new UrlMismatchException(UrlStart);

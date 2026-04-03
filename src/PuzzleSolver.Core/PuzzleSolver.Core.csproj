@@ -9,4 +9,30 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.Z3">
+      <HintPath>..\..\assets\z3\Microsoft.Z3.dll</HintPath>
+    </Reference>
+
+    <None Include="..\..\assets\z3\runtimes\**\*.*">
+      <Link>runtimes\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+
+    <None Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))" Include="..\..\assets\z3\runtimes\osx-arm64\native\libz3.dylib">
+      <Link>libz3.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+
+    <None Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))" Include="..\..\assets\z3\runtimes\win-x64\native\libz3.dll">
+      <Link>libz3.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+
+    <None Condition="$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))" Include="..\..\assets\z3\runtimes\linux-x64\native\libz3.so">
+      <Link>libz3.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
