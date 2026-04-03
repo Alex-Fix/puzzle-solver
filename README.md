@@ -228,6 +228,40 @@ https://private-user-images.githubusercontent.com/58109972/556598635-73e0ddff-4b
 
 ---
 
+### Nonogram Solver
+
+Solve a Nonogram puzzle directly from a URL.
+
+```bash
+puzzle-solver nonogram <url> [OPTIONS]
+```
+
+#### Arguments
+
+| Argument | Description                |
+| -------- |----------------------------|
+| `url`    | URL of the Nonogram puzzle |
+
+Example:
+
+```text
+https://www.nonograms.ru/nonograms/i/80309
+```
+
+#### Options
+
+| Option              | Default | Description                              |
+| ------------------- |---------|------------------------------------------|
+| `-a, --algorithm`   | `Smt`   | Solving algorithm (`Smt`, `AStar`)       |
+| `-H, --headless`    | `false` | Run browser in headless mode             |
+| `-m, --movedelayms` | `1`     | Delay (ms) between moves during playback |
+| `-h, --help`        | —       | Show help                                |
+
+#### 🎥 Demo video
+https://private-user-images.githubusercontent.com/58109972/573607135-18b0510c-83a2-44ea-bfa8-4e82e40baef1.mp4?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzUyMzgzMTMsIm5iZiI6MTc3NTIzODAxMywicGF0aCI6Ii81ODEwOTk3Mi81NzM2MDcxMzUtMThiMDUxMGMtODNhMi00NGVhLWJmYTgtNGU4MmU0MGJhZWYxLm1wND9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA0MDMlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwNDAzVDE3NDAxM1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTUxZjBkNGQ0MGVjN2E2NDg5OTJmYmM0MTE1Njc2YzFlYjQ2NzFlNTA5OTljMTY2NmYxM2UzODdmNjZmZGRjMjUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.RlTaQBKpc6RuHgUHzwbu18a3G302G_dBAOAEdSKV1-8
+
+---
+
 ## 🧠 Algorithms
 
 Currently implemented:
@@ -237,6 +271,7 @@ Currently implemented:
 * **ParallelAStar**
 * **Bfs**
 * **Dfs**
+* **Smt**
 
 The architecture allows easy addition of new algorithms by implementing solver interfaces in `PuzzleSolver.Core`.
 
@@ -334,6 +369,7 @@ Key technologies used:
 * **Spectre.Console.Cli** — CLI framework
 * **Microsoft Playwright** — browser automation
 * **xUnit** + **FluentAssertions** — testing
+* **Microsoft.Z3** - Satisfiability Modulo Theories (SMT) solver
 * **Central Package Management** via `Directory.Packages.props`
 
 ---
